@@ -2,642 +2,1269 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Flumgus Snail Sanctuary</title>
+<title>Snail vs Omni-Man</title>
 <style>
-  body, html {
-    margin: 0;
-    padding: 0;
-    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #87ceeb 100%);
-    font-family: 'Courier New', monospace;
-    color: white;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-  
-  .header {
-    text-align: center;
-    padding: 20px;
-    background: rgba(0,0,0,0.3);
-    border-bottom: 3px solid #4a90e2;
-  }
-  
-  .title {
-    font-size: 2.5em;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
-    margin: 0;
-    animation: glow 2s ease-in-out infinite alternate;
-  }
-  
-  @keyframes glow {
-    from { text-shadow: 2px 2px 4px rgba(0,0,0,0.7), 0 0 10px #4a90e2; }
-    to { text-shadow: 2px 2px 4px rgba(0,0,0,0.7), 0 0 20px #87ceeb, 0 0 30px #87ceeb; }
-  }
-  
-  .stats {
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-    margin-top: 10px;
-    font-size: 1.2em;
-    flex-wrap: wrap;
-  }
-  
-  .main-container {
-    display: flex;
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 20px;
-    gap: 20px;
-    flex-wrap: wrap;
-  }
-  
-  .tank-area {
-    flex: 2;
-    background: rgba(30,60,114,0.8);
-    border-radius: 15px;
-    padding: 20px;
-    border: 2px solid #4a90e2;
-    position: relative;
-    min-height: 500px;
-    min-width: 300px;
-  }
-  
-  .tank {
-    width: 100%;
-    height: 400px;
-    background: linear-gradient(to bottom, #87ceeb 0%, #4682b4 50%, #2e8b57 100%);
-    border: 3px solid #000080;
-    border-radius: 10px;
-    position: relative;
+  body { 
+    margin: 0; 
+    background: linear-gradient(135deg, #2c1810, #8b4513); 
+    font-family: 'Arial', sans-serif; 
+    color: #fff; 
     overflow: hidden;
-    cursor: pointer;
   }
-  
-  .snail {
+  canvas { 
+    display: block; 
+    margin: auto; 
+    background: linear-gradient(180deg, #87ceeb, #98fb98); 
+    border: 3px solid #654321;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+  }
+  .hud {
     position: absolute;
-    font-size: 2em;
-    transition: all 0.3s ease;
-    animation: float 3s ease-in-out infinite;
-    cursor: pointer;
-  }
-  
-  .golden-snail {
-    color: #ffd700;
-    text-shadow: 0 0 10px #ffd700;
-  }
-  
-  .turbo-snail {
-    color: #ff4500;
-    text-shadow: 0 0 10px #ff4500;
-    animation: turbo-float 1s ease-in-out infinite;
-  }
-  
-  @keyframes float {
-    0%, 100% { transform: translateY(0px) rotate(0deg); }
-    50% { transform: translateY(-10px) rotate(5deg); }
-  }
-  
-  @keyframes turbo-float {
-    0%, 100% { transform: translateY(0px) rotate(0deg) scale(1); }
-    50% { transform: translateY(-15px) rotate(10deg) scale(1.1); }
-  }
-  
-  .bubble {
-    position: absolute;
-    background: rgba(255,255,255,0.6);
-    border-radius: 50%;
-    animation: bubble-rise 4s linear infinite;
-  }
-  
-  @keyframes bubble-rise {
-    0% { bottom: 0; opacity: 0.7; }
-    100% { bottom: 100%; opacity: 0; }
-  }
-  
-  .controls {
-    flex: 1;
-    background: rgba(0,0,0,0.4);
-    border-radius: 15px;
-    padding: 20px;
-    border: 2px solid #4a90e2;
-    min-width: 300px;
-  }
-  
-  .section {
-    margin-bottom: 25px;
-    padding: 15px;
-    background: rgba(255,255,255,0.1);
-    border-radius: 10px;
-  }
-  
-  .section h3 {
-    margin: 0 0 15px 0;
-    color: #87ceeb;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
-  }
-  
-  button {
-    background: linear-gradient(45deg, #4a90e2, #87ceeb);
-    color: white;
-    border: none;
-    padding: 12px 16px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-family: inherit;
-    font-size: 14px;
-    font-weight: bold;
-    margin: 5px 0;
-    width: 100%;
-    transition: all 0.3s ease;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-  }
-  
-  button:hover {
-    background: linear-gradient(45deg, #87ceeb, #4a90e2);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-  }
-  
-  button:disabled {
-    background: #666;
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
-  }
-  
-  .special-button {
-    background: linear-gradient(45deg, #ffd700, #ff8c00);
-    color: #000;
-  }
-  
-  .special-button:hover {
-    background: linear-gradient(45deg, #ff8c00, #ffd700);
-  }
-  
-  .upgrade-item {
+    top: 10px;
+    left: 10px;
+    right: 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 8px 0;
-    padding: 8px;
-    background: rgba(255,255,255,0.05);
-    border-radius: 5px;
+    z-index: 10;
   }
-  
-  .currency {
-    color: #ffd700;
-    font-weight: bold;
+  .health-bar {
+    width: 200px;
+    height: 20px;
+    background: #333;
+    border: 2px solid #fff;
+    border-radius: 10px;
+    overflow: hidden;
   }
-  
-  .achievement {
-    background: rgba(255,215,0,0.2);
-    border: 1px solid #ffd700;
-    padding: 8px;
-    margin: 5px 0;
-    border-radius: 5px;
+  .health-fill {
+    height: 100%;
+    transition: width 0.3s ease;
+  }
+  .player-health { background: linear-gradient(90deg, #00ff00, #88ff88); }
+  .enemy-health { background: linear-gradient(90deg, #ff0000, #ff8888); }
+  .controls {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    background: rgba(0,0,0,0.8);
+    padding: 15px;
+    border-radius: 8px;
     font-size: 12px;
-    animation: achievement-glow 1s ease-in-out;
+    border: 1px solid #555;
   }
-  
-  @keyframes achievement-glow {
-    0% { background: rgba(255,215,0,0.4); }
-    100% { background: rgba(255,215,0,0.2); }
-  }
-  
-  .click-effect {
+  .game-over {
     position: absolute;
-    color: #ffd700;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0,0,0,0.95);
+    padding: 40px;
+    border-radius: 15px;
+    text-align: center;
+    display: none;
+    border: 2px solid #fff;
+    box-shadow: 0 0 30px rgba(0,0,0,0.8);
+  }
+  .game-over h2 {
+    margin-top: 0;
+    font-size: 32px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+  }
+  .game-over button {
+    background: linear-gradient(45deg, #4CAF50, #45a049);
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: transform 0.2s;
+  }
+  .game-over button:hover {
+    transform: scale(1.05);
+  }
+  .score {
+    font-size: 14px;
     font-weight: bold;
-    pointer-events: none;
-    animation: click-float 1s ease-out forwards;
-  }
-  
-  @keyframes click-float {
-    0% { opacity: 1; transform: translateY(0); }
-    100% { opacity: 0; transform: translateY(-50px); }
-  }
-  
-  .prestige-section {
-    background: linear-gradient(45deg, rgba(138,43,226,0.3), rgba(75,0,130,0.3));
-    border: 2px solid #9370db;
-  }
-  
-  .fish {
-    position: absolute;
-    font-size: 1.5em;
-    animation: swim 8s linear infinite;
-    z-index: 1;
-  }
-  
-  @keyframes swim {
-    0% { left: -50px; }
-    100% { left: calc(100% + 50px); }
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
   }
 </style>
 </head>
 <body>
 
-<div class="header">
-  <h1 class="title">🐌 Flumgus Snail Sanctuary 🐌</h1>
-  <div class="stats">
-    <div>Algae: <span class="currency" id="algae">0</span></div>
-    <div>Snails: <span id="snailCount">1</span></div>
-    <div>Per Second: <span class="currency" id="perSecond">0</span></div>
-    <div>Prestige: <span class="currency" id="prestigeLevel">0</span></div>
+<div class="hud">
+  <div>
+    <div class="score">Snail</div>
+    <div class="health-bar">
+      <div class="health-fill player-health" id="playerHealth" style="width: 100%"></div>
+    </div>
+  </div>
+  <div style="font-size: 24px; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">VS</div>
+  <div style="text-align: right;">
+    <div class="score">Omni-Man</div>
+    <div class="health-bar">
+      <div class="health-fill enemy-health" id="enemyHealth" style="width: 100%"></div>
+    </div>
   </div>
 </div>
 
-<div class="main-container">
-  <div class="tank-area">
-    <div class="tank" id="tank">
-      <div class="snail" id="mainSnail" style="left: 50%; top: 50%;">🐌</div>
-    </div>
-    <div style="text-align: center; margin-top: 10px;">
-      <p>Click your snails to harvest algae! 🌿</p>
-      <p>Golden snails give 3x click value, Turbo snails produce 2 algae/sec!</p>
-    </div>
-  </div>
-  
-  <div class="controls">
-    <div class="section">
-      <h3>🌿 Production</h3>
-      <button id="buySnail">Buy Snail (Cost: <span id="snailCost">10</span> algae)</button>
-      <button id="buyFeeder">Auto-Feeder (Cost: <span id="feederCost">50</span> algae)</button>
-      <div>Auto-Feeders: <span id="feederCount">0</span></div>
-    </div>
-    
-    <div class="section">
-      <h3>🐠 Special Snails</h3>
-      <button id="buyGoldenSnail" class="special-button">Golden Snail (3x click value) Cost: <span id="goldenCost">1000</span></button>
-      <button id="buyTurboSnail" class="special-button">Turbo Snail (+2 algae/sec) Cost: <span id="turboCost">5000</span></button>
-      <div>Golden Snails: <span class="currency" id="goldenCount">0</span></div>
-      <div>Turbo Snails: <span class="currency" id="turboCount">0</span></div>
-    </div>
-    
-    <div class="section">
-      <h3>⚡ Upgrades</h3>
-      <button id="upgradeClick">Better Harvesting (+1 algae/click) Cost: <span id="clickCost">25</span></button>
-      <button id="upgradeSpeed">Faster Growth (+0.5/sec) Cost: <span id="speedCost">100</span></button>
-      <button id="upgradeTank">Bigger Tank (+5 snails) Cost: <span id="tankCost">500</span></button>
-      <button id="upgradeMultiplier">Algae Multiplier (x1.5 all production) Cost: <span id="multiplierCost">2000</span></button>
-    </div>
-    
-    <div class="section prestige-section">
-      <h3>⭐ Prestige</h3>
-      <button id="prestigeButton">Prestige (Reset for permanent bonuses) Req: <span id="prestigeReq">100000</span></button>
-      <div>Prestige gives +10% to all production permanently!</div>
-    </div>
-    
-    <div class="section">
-      <h3>🏆 Achievements</h3>
-      <div id="achievements"></div>
-    </div>
-  </div>
+<canvas id="gameCanvas" width="900" height="600"></canvas>
+
+<div class="game-over" id="gameOver">
+  <h2 id="gameOverText">womp womp</h2>
+  <p id="winnerText"></p>
+  <button onclick="resetGame()">Play Again</button>
 </div>
 
 <script>
-(() => {
-  let gameState = {
-    algae: 0,
-    snails: 1,
-    feeders: 0,
-    goldenSnails: 0,
-    turboSnails: 0,
-    clickPower: 1,
-    autoSpeed: 0,
-    maxSnails: 10,
-    multiplier: 1,
-    prestigeLevel: 0,
-    
-    snailCost: 10,
-    feederCost: 50,
-    clickUpgradeCost: 25,
-    speedUpgradeCost: 100,
-    tankUpgradeCost: 500,
-    multiplierCost: 2000,
-    goldenCost: 1000,
-    turboCost: 5000,
-    
-    achievements: new Set(),
-    totalClicks: 0,
-    totalAlgae: 0
-  };
-  
-  const achievements = [
-    { id: 'first_click', name: 'First Harvest', desc: 'Click a snail for the first time', check: () => gameState.totalClicks >= 1 },
-    { id: 'algae_100', name: 'Green Thumb', desc: 'Collect 100 algae', check: () => gameState.totalAlgae >= 100 },
-    { id: 'snail_army', name: 'Snail Army', desc: 'Own 10 snails', check: () => gameState.snails >= 10 },
-    { id: 'automation', name: 'Automated', desc: 'Buy your first auto-feeder', check: () => gameState.feeders >= 1 },
-    { id: 'algae_1000', name: 'Algae Baron', desc: 'Collect 1000 algae', check: () => gameState.totalAlgae >= 1000 },
-    { id: 'click_master', name: 'Click Master', desc: 'Click 500 times', check: () => gameState.totalClicks >= 500 },
-    { id: 'mega_farm', name: 'Mega Farm', desc: 'Own 25 snails total', check: () => (gameState.snails + gameState.goldenSnails + gameState.turboSnails) >= 25 },
-    { id: 'algae_empire', name: 'Algae Empire', desc: 'Collect 10,000 algae', check: () => gameState.totalAlgae >= 10000 },
-    { id: 'speed_demon', name: 'Speed Demon', desc: 'Reach 10 algae per second', check: () => ((gameState.feeders * 0.5 + gameState.autoSpeed + gameState.turboSnails * 2) * gameState.multiplier * (1 + gameState.prestigeLevel * 0.1)) >= 10 },
-    { id: 'big_tank', name: 'Ocean Master', desc: 'Expand your tank capacity to 50', check: () => gameState.maxSnails >= 50 },
-    { id: 'click_god', name: 'Click God', desc: 'Harvest 10 algae per click', check: () => gameState.clickPower >= 10 },
-    { id: 'automation_king', name: 'Automation King', desc: 'Own 20 auto-feeders', check: () => gameState.feeders >= 20 },
-    { id: 'golden_collector', name: 'Golden Collector', desc: 'Own 5 golden snails', check: () => gameState.goldenSnails >= 5 },
-    { id: 'turbo_master', name: 'Turbo Master', desc: 'Own 10 turbo snails', check: () => gameState.turboSnails >= 10 },
-    { id: 'prestige_master', name: 'Prestige Master', desc: 'Reach prestige level 5', check: () => gameState.prestigeLevel >= 5 }
-  ];
-  
-  const elements = {
-    algae: document.getElementById('algae'),
-    snailCount: document.getElementById('snailCount'),
-    perSecond: document.getElementById('perSecond'),
-    prestigeLevel: document.getElementById('prestigeLevel'),
-    tank: document.getElementById('tank'),
-    mainSnail: document.getElementById('mainSnail'),
-    achievements: document.getElementById('achievements'),
-    
-    buySnail: document.getElementById('buySnail'),
-    buyFeeder: document.getElementById('buyFeeder'),
-    buyGoldenSnail: document.getElementById('buyGoldenSnail'),
-    buyTurboSnail: document.getElementById('buyTurboSnail'),
-    upgradeClick: document.getElementById('upgradeClick'),
-    upgradeSpeed: document.getElementById('upgradeSpeed'),
-    upgradeTank: document.getElementById('upgradeTank'),
-    upgradeMultiplier: document.getElementById('upgradeMultiplier'),
-    prestigeButton: document.getElementById('prestigeButton'),
-    
-    snailCost: document.getElementById('snailCost'),
-    feederCost: document.getElementById('feederCost'),
-    feederCount: document.getElementById('feederCount'),
-    goldenCost: document.getElementById('goldenCost'),
-    turboCost: document.getElementById('turboCost'),
-    goldenCount: document.getElementById('goldenCount'),
-    turboCount: document.getElementById('turboCount'),
-    clickCost: document.getElementById('clickCost'),
-    speedCost: document.getElementById('speedCost'),
-    tankCost: document.getElementById('tankCost'),
-    multiplierCost: document.getElementById('multiplierCost'),
-    prestigeReq: document.getElementById('prestigeReq')
-  };
-  
-  function updateDisplay() {
-    const prestigeBonus = 1 + gameState.prestigeLevel * 0.1;
-    const totalPerSecond = (gameState.feeders * 0.5 + gameState.autoSpeed + gameState.turboSnails * 2) * gameState.multiplier * prestigeBonus;
-    const totalSnails = gameState.snails + gameState.goldenSnails + gameState.turboSnails;
-    
-    elements.algae.textContent = Math.floor(gameState.algae);
-    elements.snailCount.textContent = totalSnails;
-    elements.perSecond.textContent = totalPerSecond.toFixed(1);
-    elements.prestigeLevel.textContent = gameState.prestigeLevel;
-    elements.feederCount.textContent = gameState.feeders;
-    elements.goldenCount.textContent = gameState.goldenSnails;
-    elements.turboCount.textContent = gameState.turboSnails;
-    
-    elements.snailCost.textContent = gameState.snailCost;
-    elements.feederCost.textContent = gameState.feederCost;
-    elements.goldenCost.textContent = gameState.goldenCost;
-    elements.turboCost.textContent = gameState.turboCost;
-    elements.clickCost.textContent = gameState.clickUpgradeCost;
-    elements.speedCost.textContent = gameState.speedUpgradeCost;
-    elements.tankCost.textContent = gameState.tankUpgradeCost;
-    elements.multiplierCost.textContent = gameState.multiplierCost;
-    elements.prestigeReq.textContent = Math.floor(100000 * Math.pow(10, gameState.prestigeLevel));
-    
-    // Update button states
-    elements.buySnail.disabled = gameState.algae < gameState.snailCost || totalSnails >= gameState.maxSnails;
-    elements.buyFeeder.disabled = gameState.algae < gameState.feederCost;
-    elements.buyGoldenSnail.disabled = gameState.algae < gameState.goldenCost || totalSnails >= gameState.maxSnails;
-    elements.buyTurboSnail.disabled = gameState.algae < gameState.turboCost || totalSnails >= gameState.maxSnails;
-    elements.upgradeClick.disabled = gameState.algae < gameState.clickUpgradeCost;
-    elements.upgradeSpeed.disabled = gameState.algae < gameState.speedUpgradeCost;
-    elements.upgradeTank.disabled = gameState.algae < gameState.tankUpgradeCost;
-    elements.upgradeMultiplier.disabled = gameState.algae < gameState.multiplierCost;
-    elements.prestigeButton.disabled = gameState.totalAlgae < Math.floor(100000 * Math.pow(10, gameState.prestigeLevel));
-  }
-  
-  function createSnail(type = 'normal') {
-    const snail = document.createElement('div');
-    snail.className = 'snail';
-    
-    if (type === 'golden') {
-      snail.textContent = '🟡';
-      snail.classList.add('golden-snail');
-    } else if (type === 'turbo') {
-      snail.textContent = '🔴';
-      snail.classList.add('turbo-snail');
-    } else {
-      snail.textContent = '🐌';
-    }
-    
-    snail.style.left = Math.random() * 80 + 10 + '%';
-    snail.style.top = Math.random() * 70 + 15 + '%';
-    snail.style.animationDelay = Math.random() * 3 + 's';
-    
-    snail.addEventListener('click', (e) => {
-      e.stopPropagation();
-      harvestSnail(e, type);
-    });
-    
-    elements.tank.appendChild(snail);
-  }
-  
-  function harvestSnail(e, type = 'normal') {
-    const prestigeBonus = 1 + gameState.prestigeLevel * 0.1;
-    let algaeGain = gameState.clickPower * gameState.multiplier * prestigeBonus;
-    
-    if (type === 'golden') {
-      algaeGain *= 3;
-    }
-    
-    gameState.algae += algaeGain;
-    gameState.totalAlgae += algaeGain;
-    gameState.totalClicks++;
-    
-    // Create click effect
-    const effect = document.createElement('div');
-    effect.className = 'click-effect';
-    effect.textContent = '+' + Math.floor(algaeGain);
-    effect.style.left = e.clientX - elements.tank.getBoundingClientRect().left + 'px';
-    effect.style.top = e.clientY - elements.tank.getBoundingClientRect().top + 'px';
-    if (type === 'golden') effect.style.color = '#ffd700';
-    if (type === 'turbo') effect.style.color = '#ff4500';
-    elements.tank.appendChild(effect);
-    
-    setTimeout(() => effect.remove(), 1000);
-    
-    updateDisplay();
-    checkAchievements();
-  }
-  
-  function createBubble() {
-    const bubble = document.createElement('div');
-    bubble.className = 'bubble';
-    bubble.style.left = Math.random() * 100 + '%';
-    bubble.style.width = bubble.style.height = Math.random() * 10 + 5 + 'px';
-    bubble.style.animationDuration = Math.random() * 2 + 3 + 's';
-    elements.tank.appendChild(bubble);
-    
-    setTimeout(() => bubble.remove(), 5000);
-  }
-  
-  function spawnFish() {
-    const fish = document.createElement('div');
-    fish.className = 'fish';
-    fish.textContent = ['🐟', '🐠', '🐡'][Math.floor(Math.random() * 3)];
-    fish.style.top = Math.random() * 80 + 10 + '%';
-    fish.style.animationDuration = Math.random() * 4 + 6 + 's';
-    elements.tank.appendChild(fish);
-    
-    setTimeout(() => fish.remove(), 10000);
-  }
-  
-  function checkAchievements() {
-    achievements.forEach(achievement => {
-      if (!gameState.achievements.has(achievement.id) && achievement.check()) {
-        gameState.achievements.add(achievement.id);
-        
-        const achElement = document.createElement('div');
-        achElement.className = 'achievement';
-        achElement.innerHTML = `<strong>${achievement.name}</strong><br>${achievement.desc}`;
-        elements.achievements.appendChild(achElement);
-      }
-    });
-  }
-  
-  function prestige() {
-    if (gameState.totalAlgae >= Math.floor(100000 * Math.pow(10, gameState.prestigeLevel))) {
-      gameState.prestigeLevel++;
-      
-      // Reset most things
-      gameState.algae = 0;
-      gameState.snails = 1;
-      gameState.feeders = 0;
-      gameState.goldenSnails = 0;
-      gameState.turboSnails = 0;
-      gameState.clickPower = 1;
-      gameState.autoSpeed = 0;
-      gameState.maxSnails = 10;
-      gameState.multiplier = 1;
-      
-      gameState.snailCost = 10;
-      gameState.feederCost = 50;
-      gameState.clickUpgradeCost = 25;
-      gameState.speedUpgradeCost = 100;
-      gameState.tankUpgradeCost = 500;
-      gameState.multiplierCost = 2000;
-      gameState.goldenCost = 1000;
-      gameState.turboCost = 5000;
-      
-      // Clear tank
-      const snails = elements.tank.querySelectorAll('.snail:not(#mainSnail)');
-      snails.forEach(snail => snail.remove());
-      
-      updateDisplay();
-      checkAchievements();
-    }
-  }
-  
-  // Event listeners
-  elements.buySnail.addEventListener('click', () => {
-    const totalSnails = gameState.snails + gameState.goldenSnails + gameState.turboSnails;
-    if (gameState.algae >= gameState.snailCost && totalSnails < gameState.maxSnails) {
-      gameState.algae -= gameState.snailCost;
-      gameState.snails++;
-      gameState.snailCost = Math.floor(gameState.snailCost * 1.5);
-      createSnail('normal');
-      updateDisplay();
-      checkAchievements();
-    }
-  });
-  
-  elements.buyGoldenSnail.addEventListener('click', () => {
-    const totalSnails = gameState.snails + gameState.goldenSnails + gameState.turboSnails;
-    if (gameState.algae >= gameState.goldenCost && totalSnails < gameState.maxSnails) {
-      gameState.algae -= gameState.goldenCost;
-      gameState.goldenSnails++;
-      gameState.goldenCost = Math.floor(gameState.goldenCost * 2);
-      createSnail('golden');
-      updateDisplay();
-      checkAchievements();
-    }
-  });
-  
-  elements.buyTurboSnail.addEventListener('click', () => {
-    const totalSnails = gameState.snails + gameState.goldenSnails + gameState.turboSnails;
-    if (gameState.algae >= gameState.turboCost && totalSnails < gameState.maxSnails) {
-      gameState.algae -= gameState.turboCost;
-      gameState.turboSnails++;
-      gameState.turboCost = Math.floor(gameState.turboCost * 2.5);
-      createSnail('turbo');
-      updateDisplay();
-      checkAchievements();
-    }
-  });
-  
-  elements.buyFeeder.addEventListener('click', () => {
-    if (gameState.algae >= gameState.feederCost) {
-      gameState.algae -= gameState.feederCost;
-      gameState.feeders++;
-      gameState.feederCost = Math.floor(gameState.feederCost * 1.8);
-      updateDisplay();
-      checkAchievements();
-    }
-  });
-  
-  elements.upgradeClick.addEventListener('click', () => {
-    if (gameState.algae >= gameState.clickUpgradeCost) {
-      gameState.algae -= gameState.clickUpgradeCost;
-      gameState.clickPower++;
-      gameState.clickUpgradeCost = Math.floor(gameState.clickUpgradeCost * 2);
-      updateDisplay();
-    }
-  });
-  
-  elements.upgradeSpeed.addEventListener('click', () => {
-    if (gameState.algae >= gameState.speedUpgradeCost) {
-      gameState.algae -= gameState.speedUpgradeCost;
-      gameState.autoSpeed += 0.5;
-      gameState.speedUpgradeCost = Math.floor(gameState.speedUpgradeCost * 2.5);
-      updateDisplay();
-    }
-  });
-  
-  elements.upgradeTank.addEventListener('click', () => {
-    if (gameState.algae >= gameState.tankUpgradeCost) {
-      gameState.algae -= gameState.tankUpgradeCost;
-      gameState.maxSnails += 5;
-      gameState.tankUpgradeCost = Math.floor(gameState.tankUpgradeCost * 3);
-      updateDisplay();
-    }
-  });
-  
-  elements.upgradeMultiplier.addEventListener('click', () => {
-    if (gameState.algae >= gameState.multiplierCost) {
-      gameState.algae -= gameState.multiplierCost;
-      gameState.multiplier *= 1.5;
-      gameState.multiplierCost = Math.floor(gameState.multiplierCost * 5);
-      updateDisplay();
-    }
-  });
-  
-  elements.prestigeButton.addEventListener('click', prestige);
-  
-  elements.mainSnail.addEventListener('click', (e) => harvestSnail(e, 'normal'));
-  
-  // Game loop
-  setInterval(() => {
-    const prestigeBonus = 1 + gameState.prestigeLevel * 0.1;
-    const passiveIncome = ((gameState.feeders * 0.5 + gameState.autoSpeed + gameState.turboSnails * 2) * gameState.multiplier * prestigeBonus) / 10;
-    gameState.algae += passiveIncome;
-    gameState.totalAlgae += passiveIncome;
-    updateDisplay();
-    checkAchievements();
-  }, 100);
-  
-  // Visual effects
-  setInterval(createBubble, 2000);
-  setInterval(spawnFish, 8000);
-  
-  // Initial setup
-  updateDisplay();
-  checkAchievements();
-})();
-</script>
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
 
+// Load Omni-Man image from Base64 (ass "ass pose", flipped upside down)
+const omniManImage = new Image();
+omniManImage.src = "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/f30cb578-0362-44ce-a38d-c4d4508cfb7c/dk0h227-f63de1d2-745e-4749-ae2f-014b11027ddb.png/v1/fill/w_50,h_50,q_80,strp/sd_by_femboylover696969699_dk0h227-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NTAiLCJwYXRoIjoiXC9mXC9mMzBjYjU3OC0wMzYyLTQ0Y2UtYTM4ZC1jNGQ0NTA4Y2ZiN2NcL2RrMGgyMjctZjYzZGUxZDItNzQ1ZS00NzQ5LWFlMmYtMDE0YjExMDI3ZGRiLnBuZyIsIndpZHRoIjoiPD01MCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.eI8DsTmNOT5rZGCwaWxUMu2oVQFw_O1xPHCQ26H1pJk";
+const snailImage = new Image();
+snailImage.onload = () => {
+  snailImageLoaded = true;
+};
+snailImage.src = "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/f30cb578-0362-44ce-a38d-c4d4508cfb7c/dk0h3kv-cf53e658-6d42-40a7-9a78-9c431600237f.png/v1/fill/w_50,h_50,q_80,strp/sdsddssdkibidi_by_femboylover696969699_dk0h3kv-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NTAiLCJwYXRoIjoiXC9mXC9mMzBjYjU3OC0wMzYyLTQ0Y2UtYTM4ZC1jNGQ0NTA4Y2ZiN2NcL2RrMGgza3YtY2Y1M2U2NTgtNmQ0Mi00MGE3LTlhNzgtOWM0MzE2MDAyMzdmLnBuZyIsIndpZHRoIjoiPD01MCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.N6K9R1M2CaozK9SDhmGWADD3InUdB2xVuPf2w6WWDs4"
+// Game constantsa
+const STAGE_Y = 520;
+const CHARACTER_SIZE = 50;
+const GRAVITY = 0.5;
+
+let gameState = 'playing';
+
+const player = {
+  x: 100, 
+  y: 0, 
+  size: CHARACTER_SIZE,
+  vx: 0, 
+  vy: 0,
+  speed: 2.8,
+  jumpStrength: 12,
+  onGround: false,
+  doubleJump: false,
+  invincible: false,
+  invincibleTimer: 0,
+  hp: 100,
+  maxHp: 100,
+  facing: 1,
+  attacking: false,
+  attackTimer: 0,
+  attackCooldown: 0,
+  attackType: 'none'
+};
+
+const enemy = {
+  x: 700, 
+  y: 0, 
+  size: CHARACTER_SIZE,
+  vx: 0, 
+  vy: 0,
+  jumpChance: 0.06,
+  onGround: false,
+  hp: 500,
+  maxHp: 500,
+  facing: -1,
+  attacking: false,
+  attackTimer: 0,
+  attackCooldown: 0,
+  attackType: 'none',
+  attackRange: 90,
+  aggroRange: 350,
+  // AI Behavior States
+  aiState: 'hunt', // hunt, attack, retreat, special, patrol
+  aiTimer: 0,
+  stateChangeTimer: 0,
+  // Special Abilities
+  flyingTimer: 2,
+  isFlying: false,
+  diveBombTimer: 0,
+  isDiveBombing: false,
+  laserTimer: 2,
+  isChargingLaser: false,
+  comboCount: 0,
+  lastAttackTime: 0,
+  // Movement patterns
+  patrolDirection: 1,
+  patrolTimer: 1,
+  speed: 2.8
+};
+
+const platforms = [
+  {x: 621, y: 446.625, w: 120, h: 15},
+  {x: 0, y: 515.125, w: 900, h: 60},
+  {x: 349, y: 191.625, w: 120, h: 15},
+  {x: 221, y: 321.625, w: 120, h: 15},
+  {x: 485, y: 328.625, w: 120, h: 15},
+  {x: 86, y: 442.625, w: 120, h: 15},
+  {x: 106, y: 194.625, w: 120, h: 15},
+  {x: 535, y: 196.625, w: 120, h: 15},
+  {x: 337, y: 393.625, w: 120, h: 15},
+  {x: 0, y: 341.625, w: 120, h: 15},
+  {x: 691, y: 340.625, w: 120, h: 15}
+
+
+];
+
+const keys = {};
+const particles = [];
+
+// Event listeners
+document.addEventListener('keydown', (e) => {
+  keys[e.key.toLowerCase()] = true;
+  keys[e.key] = true;
+});
+document.addEventListener('keyup', (e) => {
+  keys[e.key.toLowerCase()] = false;
+  keys[e.key] = false;
+});
+
+// Particle system
+function createParticle(x, y, color, vx = 0, vy = 0) {
+  particles.push({
+    x, y, vx, vy, color, 
+    life: 30, 
+    size: Math.random() * 3 + 2, 
+    maxLife: 30
+  });
+}
+
+function updateParticles() {
+  for (let i = particles.length - 1; i >= 0; i--) {
+    const p = particles[i];
+    p.x += p.vx;
+    p.y += p.vy;
+    p.vy += 0.2;
+    p.life--;
+    if (p.life <= 0) particles.splice(i, 1);
+  }
+}
+
+function drawParticles() {
+  particles.forEach(p => {
+    ctx.globalAlpha = p.life / p.maxLife;
+    ctx.fillStyle = p.color;
+    ctx.fillRect(p.x - p.size/2, p.y - p.size/2, p.size, p.size);
+  });
+  ctx.globalAlpha = 1;
+}
+
+function handleMovement() {
+  // Player movement
+  if (keys['arrowleft'] || keys['a']) {
+    player.vx = -player.speed;
+    player.facing = -1;
+  } else if (keys['arrowright'] || keys['d']) {
+    player.vx = player.speed;
+    player.facing = 1;
+  } else {
+    player.vx = 0;
+  }
+
+  // Player jump
+  if ((keys['arrowup'] || keys['w'] || keys[' ']) && (player.onGround || player.doubleJump)) {
+    player.vy = -player.jumpStrength;
+    if (!player.onGround) player.doubleJump = false;
+    player.onGround = false;
+  }
+
+  // Player dodge
+  if (keys['shift'] && !player.invincible) {
+    player.invincible = true;
+    player.invincibleTimer = 40;
+    player.vx = player.facing * 10099; // Dodge roll movement
+  }
+}
+
+function handleAttacks() {
+  // Player attacks
+  if (player.attackTimer > 0) player.attackTimer--;
+  if (player.attackCooldown > 0) player.attackCooldown--;
+
+  if (player.attackTimer === 0 && player.attackCooldown === 0) {
+    if (keys['z']) performAttack(player, 'light', 8, 15, 20);
+    else if (keys['x']) performAttack(player, 'heavy', 15, 25, 35);
+    else if (keys['c']) performAttack(player, 'super', 25, 35, 60);
+  }
+
+  // Enemy attacks
+  if (enemy.attackTimer > 0) enemy.attackTimer--;
+  if (enemy.attackCooldown > 0) enemy.attackCooldown--;
+}
+
+function performAttack(attacker, type, damage, duration, cooldown) {
+  attacker.attacking = true;
+  attacker.attackType = type;
+  attacker.attackTimer = duration;
+  attacker.attackCooldown = cooldown;
+  attacker.damage = damage;
+}
+
+function handlePlatformCollision(entity) {
+  entity.onGround = false;
+
+  platforms.forEach(platform => {
+    if (
+      entity.x + entity.size > platform.x &&
+      entity.x < platform.x + platform.w &&
+      entity.y + entity.size > platform.y &&
+      entity.y + entity.size - entity.vy <= platform.y + 10
+    ) {
+      entity.y = platform.y - entity.size;
+      entity.vy = 0;
+      entity.onGround = true;
+      if (entity === player) {
+        entity.doubleJump = true;
+      }
+    }
+  });
+}
+
+function checkCombat() {
+  // Player hits enemy
+  if (player.attacking && player.attackTimer > player.attackTimer * 0.3) {
+    const distance = Math.abs(player.x - enemy.x) + Math.abs(player.y - enemy.y);
+    if (distance < 80) {
+      enemy.hp -= player.damage;
+      enemy.hp = Math.max(0, enemy.hp);
+      enemy.vx = player.facing * (player.attackType === 'super' ? 25 : player.attackType === 'heavy' ? 20 : 15);
+      enemy.vy = -8;
+      for (let i = 0; i < 10; i++) {
+        createParticle(
+          enemy.x + enemy.size / 2,
+          enemy.y + enemy.size / 2,
+          '#ff4444',
+          (Math.random() - 0.5) * 12,
+          (Math.random() - 0.5) * 12
+        );
+      }
+      player.attacking = false;
+    }
+  }
+
+  // Enemy hits player
+  if (enemy.attacking && enemy.attackTimer > enemy.attackTimer * 0.3) {
+    const distance = Math.abs(enemy.x - player.x) + Math.abs(enemy.y - player.y);
+    if (distance < 80 && !player.invincible) {
+      player.hp -= enemy.damage;
+      player.hp = Math.max(0, player.hp);
+      player.vx = enemy.facing * 18;
+      player.vy = -6;
+      player.invincible = true;
+      player.invincibleTimer = 25;
+      for (let i = 0; i < 8; i++) {
+        createParticle(
+          player.x + player.size / 2,
+          player.y + player.size / 2,
+          '#00ff88',
+          (Math.random() - 0.5) * 10,
+          (Math.random() - 0.5) * 10
+        );
+      }
+      enemy.attacking = false;
+    }
+  }
+}
+
+function updateAI() {
+  if (gameState !== 'playing' || enemy.hp <= 0) return;
+
+  const distX = Math.abs(enemy.x - player.x);
+  const distY = Math.abs(enemy.y - player.y);
+  const dir = enemy.x < player.x ? 1 : -1;
+
+  enemy.aiTimer++;
+  enemy.stateChangeTimer++;
+  if (enemy.flyingTimer > 0) enemy.flyingTimer--;
+  if (enemy.diveBombTimer > 0) enemy.diveBombTimer--;
+  if (enemy.laserTimer > 0) enemy.laserTimer--;
+  enemy.patrolTimer++;
+
+  switch (enemy.aiState) {
+    case 'hunt': handleHuntState(distX, distY, dir); break;
+    case 'attack': handleAttackState(distX, distY, dir); break;
+    case 'retreat': handleRetreatState(distX, distY, dir); break;
+    case 'special': handleSpecialState(distX, distY, dir); break;
+    case 'patrol': handlePatrolState(); break;
+  }
+
+  updateSpecialAbilities();
+
+  if (enemy.stateChangeTimer > 180) {
+    chooseNextState(distX, enemy.hp / enemy.maxHp);
+    enemy.stateChangeTimer = 0;
+  }
+}
+
+// State handling functions (same as previous, unchanged)
+function handleHuntState(distX, distY, dir) {
+  enemy.facing = dir;
+  if (distX > 100) {
+    enemy.vx = enemy.facing * enemy.speed * 1.5;
+    if (enemy.onGround && (Math.random() < 0.02 || distY > 50)) {
+      enemy.vy = -14;
+      enemy.onGround = false;
+    }
+  } else {
+    enemy.vx = enemy.facing * enemy.speed * 0.8;
+    if (Math.random() < 0.005) { enemy.vx = -enemy.facing * enemy.speed * 2; }
+  }
+}
+
+function handleAttackState(distX, distY, dir) {
+  enemy.facing = dir;
+  if (distX < enemy.attackRange && enemy.attackCooldown === 0) {
+    if (Date.now() - enemy.lastAttackTime < 1000) enemy.comboCount++;
+    else enemy.comboCount = 0;
+    let attackType, damage, duration, cooldown;
+    if (enemy.comboCount >= 2) {
+      attackType = 'mega'; damage=20; duration=40; cooldown=120; enemy.comboCount=0;
+    } else if (Math.random() < 0.4) {
+      attackType='heavy'; damage=15; duration=30; cooldown=60;
+    } else {
+      attackType='light'; damage=10; duration=15; cooldown=30;
+    }
+    performAttack(enemy, attackType, damage, duration, cooldown);
+    enemy.lastAttackTime=Date.now();
+  } else {
+    if (distX > enemy.attackRange) { enemy.vx=enemy.facing*enemy.speed*2; }
+    else if (distX<40) { enemy.vx=-enemy.facing*enemy.speed; }
+  }
+}
+
+function handleRetreatState(distX, distY, dir) {
+  enemy.facing = -dir;
+  enemy.vx=enemy.facing*enemy.speed*1.2;
+  if (distX<120 && enemy.onGround && Math.random()<0.03) {
+    enemy.vy=-16; enemy.onGround=false;
+  }
+  if (distX<80 && Math.random()<0.008 && enemy.attackCooldown===0) {
+    performAttack(enemy,'counter',12,25,70);
+    enemy.facing=dir;
+  }
+}
+
+function handleSpecialState(distX, distY, dir) {
+  if (!enemy.isFlying && !enemy.isDiveBombing && !enemy.isChargingaLaser) {
+    const rand=Math.random();
+    if (rand<0.4 && distX>150) {
+      enemy.isFlying=true; enemy.flyingTimer=120;
+    } else if (rand<0.7 && distY<100) {
+      enemy.isDiveBombing=true; enemy.diveBombTimer=80;
+    } else {
+      enemy.isChargingLaser=true; enemy.laserTimer=60;
+    }
+  }
+}
+
+function handlePatrolState() {
+  enemy.vx=enemy.patrolDirection*enemy.speed*0.7;
+  if (enemy.x<100 || enemy.x>canvas.width-150 || (enemy.patrolTimer>120 && Math.random()<0.02)) {
+    enemy.patrolDirection*=-1;
+    enemy.facing=enemy.patrolDirection;
+    enemy.patrolTimer=0;
+  }
+  if (enemy.onGround && Math.random()<0.005) {
+    enemy.vy=-10; enemy.onGround=false;
+  }
+}
+
+function updateSpecialAbilities() {
+  if (enemy.isFlying && enemy.flyingTimer>0) {
+    enemy.vy=Math.sin(enemy.aiTimer*0.1)*2;
+    enemy.vx=enemy.facing*enemy.speed*2;
+    if (enemy.flyingTimer<20) { enemy.vy=8; }
+    if (enemy.flyingTimer===0) { enemy.isFlying=false; }
+  }
+  if (enemy.isDiveBombing && enemy.diveBombTimer>0) {
+    if (enemy.diveBombTimer>40) { enemy.vy=-18; }
+    else { enemy.vy=15; enemy.vx=enemy.facing*enemy.speed*3; }
+    if (enemy.diveBombTimer===0) {
+      enemy.isDiveBombing=false;
+      for (let i=0;i<15;i++) {
+        createParticle(enemy.x+enemy.size/2, enemy.y+enemy.size, '#ff8800', (Math.random()-0.5)*20, -Math.random()*15);
+      }
+    }
+  }
+  if (enemy.isChargingLaser && enemy.laserTimer>0) {
+    enemy.vx*=0.5;
+    if (enemy.laserTimer%5===0) {
+      createParticle(enemy.x+(enemy.facing>0?40:10), enemy.y+15, '#ff0000', 0,0);
+    }
+    if (enemy.laserTimer===1) {
+      fireLaser();
+    }
+    if (enemy.laserTimer===0) { enemy.isChargingLaser=false; }
+  }
+}
+
+function fireLaser() {
+  for (let i=0;i<20;i++) {
+    const laserX=enemy.x+(enemy.facing>0?enemy.size:0);
+    const laserY=enemy.y+15;
+    createParticle(laserX+i*enemy.facing*15, laserY, '#ff0066', enemy.facing*8, (Math.random()-0.5)*2);
+  }
+  // Check hit
+  const laserRange=300;
+  const inPath= Math.abs(player.y - enemy.y)<30;
+  const inRange= (enemy.facing>0 && player.x>enemy.x && player.x<enemy.x+laserRange) ||
+                 (enemy.facing<0 && player.x<enemy.x && player.x>enemy.x-laserRange);
+  if (inPath && inRange && !player.invincible) {
+    player.hp-=18; player.hp=Math.max(0,player.hp);
+    player.invincible=true; player.invincibleTimer=30;
+    player.vx=enemy.facing*20; player.vy=-5;
+  }
+}
+
+function chooseNextState(distX, hpRatio) {
+  const r=Math.random();
+  if (distX>400) { enemy.aiState=r<0.3?'patrol':'hunt'; }
+  else if (distX<100) {
+    if (hpRatio<0.3) { enemy.aiState=r<0.4?'retreat':'special'; }
+    else { enemy.aiState=r<0.7?'attack':'special'; }
+  } else { 
+    if (r<0.4) enemy.aiState='hunt';
+    else if (r<0.7) enemy.aiState='attack';
+    else if (r<0.85) enemy.aiState='special';
+    else enemy.aiState='retreat';
+  }
+}
+
+function updatePhysics() {
+  if (!player.onGround) player.vy+=GRAVITY;
+  if (!enemy.onGround) enemy.vy+=GRAVITY;
+  player.x+=player.vx; player.y+=player.vy;
+  enemy.x+=enemy.vx; enemy.y+=enemy.vy;
+
+  handlePlatformCollision(player);
+  handlePlatformCollision(enemy);
+  // Boundaries
+  player.x=Math.max(0, Math.min(canvas.width - player.size, player.x));
+  enemy.x=Math.max(0, Math.min(canvas.width - enemy.size, enemy.x));
+  if (player.y>canvas.height+100) resetPositions();
+  if (enemy.y>canvas.height+100) resetPositions();
+}
+
+function updateTimers() {
+  if (player.invincibleTimer>0) player.invincibleTimer--;
+  if (player.invincibleTimer===0) player.invincible=false;
+}
+
+function checkGameOver() {
+  if (player.hp<=0) {
+    gameState='gameOver';
+    document.getElementById('gameOverText').textContent='DEFEAT!';
+    document.getElementById('winnerText').textContent='Omni-Man has crushed the Smash Snail!';
+    document.getElementById('gameOver').style.display='block';
+  } else if (enemy.hp<=0) {
+    gameState='gameOver';
+    document.getElementById('gameOverText').textContent='VICTORY!';
+    document.getElementById('winnerText').textContent='The Slow Smash Snail triumphs!';
+    document.getElementById('gameOver').style.display='block';
+  }
+}
+
+function updateHealthBars() {
+  document.getElementById('playerHealth').style.width = ((player.hp / player.maxHp) * 100) + '%';
+  document.getElementById('enemyHealth').style.width = ((enemy.hp / enemy.maxHp) * 100) + '%';
+}
+
+function resetPositions() {
+  player.x=100; player.y=0; player.vx=0; player.vy=0; player.hp=player.maxHp; player.invincible=false; player.invincibleTimer=0; player.attacking=false; player.attackTimer=0; player.attackCooldown=0;
+  enemy.x=700; enemy.y=0; enemy.vx=0; enemy.vy=0; enemy.hp=enemy.maxHp; enemy.attacking=false; enemy.attackTimer=0; enemy.attackCooldown=0; enemy.aiState='hunt'; enemy.aiTimer=0; enemy.stateChangeTimer=0; enemy.flyingTimer=0; enemy.isFlying=false; enemy.diveBombTimer=0; enemy.isDiveBombing=false; enemy.laserTimer=0; enemy.isChargingLaser=false; enemy.comboCount=0; enemy.lastAttackTime=0; enemy.patrolDirection=1; enemy.patrolTimer=0; particles.length=0;
+}
+
+function resetGame() {
+  gameState='playing';
+  document.getElementById('gameOver').style.display='none';
+  resetPositions();
+}
+
+function drawBackground() {
+  // Sky
+  const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+  gradient.addColorStop(0, '#87ceeb');
+  gradient.addColorStop(1, '#98fb98');
+  ctx.fillStyle=gradient;
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+  // Clouds
+  ctx.fillStyle='rgba(255,255,255,0.6)';
+  ctx.beginPath(); ctx.arc(150,100,30,0,Math.PI*2); ctx.arc(180,100,40,0,Math.PI*2); ctx.arc(210,100,30,0,Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(600,150,25,0,Math.PI*2); ctx.arc(625,150,35,0,Math.PI*2); ctx.arc(650,150,25,0,Math.PI*2); ctx.fill();
+}
+
+function drawPlatforms() {
+  ctx.fillStyle='#8b4513';
+  ctx.strokeStyle='#654321';
+  ctx.lineWidth=2;
+  platforms.forEach(p => {
+    ctx.fillRect(p.x,p.y,p.w,p.h);
+    ctx.strokeRect(p.x,p.y,p.w,p.h);
+  });
+}
+
+function drawCharacter(character, color, emoji) {
+  ctx.save();
+  if (character === enemy && omniManImage.complete) {
+    // Draw Omni-Man upside down for "ass pose"
+    const size = character.size;
+    const centerX = character.x + size/2;
+    const centerY = character.y + size/2;
+    ctx.translate(centerX, centerY);
+    ctx.scale(1, -1); // Flip vertically
+    ctx.drawImage(omniManImage, -size/2, -size/2, size, size);
+  } else {
+    // Draw snail image if loaded, else fallback rectangle
+    if (character === player && snailImageLoaded) {
+      ctx.drawImage(snailImage, character.x, character.y, character.size, character.size);
+    } else {
+      // Fallback rectangle
+      ctx.fillStyle = color;
+      ctx.fillRect(character.x, character.y, character.size, character.size);
+      ctx.strokeStyle='#000';
+      ctx.lineWidth=2;
+      ctx.strokeRect(character.x, character.y, character.size, character.size);
+      
+      // Eyes
+      ctx.fillStyle='#fff';
+      if (character!==enemy || !enemy.isChargingLaser) {
+        if (character.facing===1) {
+          ctx.fillRect(character.x+30, character.y+10,8,8);
+          ctx.fillRect(character.x+40, character.y+10,8,8);
+          ctx.fillStyle='#000';
+          ctx.fillRect(character.x+33, character.y+13,2,2);
+          ctx.fillRect(character.x+43, character.y+13,2,2);
+        } else {
+          ctx.fillRect(character.x+2, character.y+10,8,8);
+          ctx.fillRect(character.x+12, character.y+10,8,8);
+          ctx.fillStyle='#000';
+          ctx.fillRect(character.x+5, character.y+13,2,2);
+          ctx.fillRect(character.x+15, character.y+13,2,2);
+        }
+      }
+
+      // Attack effect (if attacking)
+      if (character.attacking && character.attackTimer > 0) {
+        ctx.globalAlpha=0.6;
+        ctx.fillStyle= character===player ? '#00ff88':'#ff4444';
+        let attackWidth;
+        if (character.attackType==='mega') attackWidth=45;
+        else if (character.attackType==='super') attackWidth=35;
+        else if (character.attackType==='heavy') attackWidth=25;
+        else attackWidth=20;
+        const attackX= character.facing>0 ? character.x+character.size : character.x-attackWidth;
+        ctx.fillRect(attackX, character.y, attackWidth, character.size);
+        if (character.attackType==='mega') {
+          ctx.fillStyle='#ffff00';
+          ctx.globalAlpha=0.4;
+          ctx.fillRect(attackX-5, character.y-5, attackWidth+10, character.size+10);
+        }
+        ctx.globalAlpha=1;
+      }
+    }
+  }
+  ctx.restore();
+}
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  drawBackground();
+  drawPlatforms();
+  drawCharacter(player, '#00ff00', '🐌');
+  drawCharacter(enemy, '#ff0000', '💪');
+  drawParticles();
+}
+
+// Particle functions
+function createParticle(x, y, color, vx=0, vy=0) {
+  particles.push({x, y, vx, vy, color, life:30, size:Math.random()*3+2, maxLife:30});
+}
+function updateParticles() {
+  for (let i=particles.length-1;i>=0;i--) {
+    const p=particles[i];
+    p.x+=p.vx;
+    p.y+=p.vy;
+    p.vy+=0.2;
+    p.life--;
+    if (p.life<=0) particles.splice(i,1);
+  }
+}
+function drawParticles() {
+  particles.forEach(p => {
+    ctx.globalAlpha=p.life/p.maxLife;
+    ctx.fillStyle=p.color;
+    ctx.fillRect(p.x - p.size/2, p.y - p.size/2, p.size, p.size);
+  });
+  ctx.globalAlpha=1;
+}
+
+// Input handling
+document.addEventListener('keydown', (e) => { keys[e.key.toLowerCase()]=true; keys[e.key]=true; });
+document.addEventListener('keyup', (e) => { keys[e.key.toLowerCase()]=false; keys[e.key]=false; });
+
+// Game functions
+function handleMovement() {
+  if (keys['arrowleft'] || keys['a']) { player.vx=-player.speed; player.facing=-1; }
+  else if (keys['arrowright'] || keys['d']) { player.vx=player.speed; player.facing=1; }
+  else { player.vx=0; }
+
+  if ((keys['arrowup'] || keys['w'] || keys[' ']) && (player.onGround || player.doubleJump)) {
+    player.vy=-player.jumpStrength;
+    if (!player.onGround) player.doubleJump=false;
+    player.onGround=false;
+  }
+
+  if (keys['shift'] && !player.invincible) {
+    player.invincible=true; player.invincibleTimer=15;
+    player.vx=player.facing*8;
+  }
+}
+
+function handleAttacks() {
+  if (player.attackTimer>0) player.attackTimer--;
+  if (player.attackCooldown>0) player.attackCooldown--;
+
+  if (player.attackTimer===0 && player.attackCooldown===0) {
+    if (keys['z']) performAttack(player,'light',8,15,20);
+    else if (keys['x']) performAttack(player,'heavy',15,25,35);
+    else if (keys['c']) performAttack(player,'super',25,35,60);
+  }
+
+  if (enemy.attackTimer>0) enemy.attackTimer--;
+  if (enemy.attackCooldown>0) enemy.attackCooldown--;
+}
+
+function performAttack(attacker,type,damage,duration,cooldown) {
+  attacker.attacking=true;
+  attacker.attackType=type;
+  attacker.attackTimer=duration;
+  attacker.attackCooldown=cooldown;
+  attacker.damage=damage;
+}
+
+function handlePlatformCollision(entity) {
+  entity.onGround=false;
+  platforms.forEach(p => {
+    if (
+      entity.x+entity.size > p.x &&
+      entity.x < p.x+p.w &&
+      entity.y+entity.size > p.y &&
+      entity.y+entity.size - entity.vy <= p.y+10
+    ) {
+      entity.y=p.y - entity.size;
+      entity.vy=0;
+      entity.onGround=true;
+      if (entity===player) { player.doubleJump=true; }
+    }
+  });
+}
+
+function checkCombat() {
+  // Player hits enemy
+  if (player.attacking && player.attackTimer>player.attackTimer*0.3) {
+    const dist=Math.abs(player.x - enemy.x) + Math.abs(player.y - enemy.y);
+    if (dist<80) {
+      enemy.hp -= player.damage;
+      enemy.hp=Math.max(0,enemy.hp);
+      enemy.vx=player.facing*(player.attackType==='super'?25:player.attackType==='heavy'?20:15);
+      enemy.vy=-8;
+      for (let i=0;i<10;i++) {
+        createParticle(enemy.x+enemy.size/2, enemy.y+enemy.size/2, '#ff4444', (Math.random()-0.5)*12, (Math.random()-0.5)*12);
+      }
+      player.attacking=false;
+    }
+  }
+  // Enemy hits player
+  if (enemy.attacking && enemy.attackTimer>enemy.attackTimer*0.3) {
+    const dist=Math.abs(enemy.x - player.x) + Math.abs(enemy.y - player.y);
+    if (dist<80 && !player.invincible) {
+      player.hp -= enemy.damage;
+      player.hp=Math.max(0,player.hp);
+      player.vx=enemy.facing*18;
+      player.vy=-6;
+      player.invincible=true; player.invincibleTimer=25;
+      for (let i=0;i<8;i++) {
+        createParticle(player.x+player.size/2, player.y+player.size/2, '#00ff88', (Math.random()-0.5)*10, (Math.random()-0.5)*10);
+      }
+      enemy.attacking=false;
+    }
+  }
+}
+
+function updateAI() {
+  if (gameState!=='playing' || enemy.hp<=0) return;
+  const distX=Math.abs(enemy.x - player.x);
+  const distY=Math.abs(enemy.y - player.y);
+  const dir=enemy.x<player.x?1:-1;
+
+  enemy.aiTimer++;
+  enemy.stateChangeTimer++;
+  if (enemy.flyingTimer>0) enemy.flyingTimer--;
+  if (enemy.diveBombTimer>0) enemy.diveBombTimer--;
+  if (enemy.laserTimer>0) enemy.laserTimer--;
+  enemy.patrolTimer++;
+
+  switch(enemy.aiState) {
+    case 'hunt': handleHuntState(distX, distY, dir); break;
+    case 'attack': handleAttackState(distX, distY, dir); break;
+    case 'retreat': handleRetreatState(distX, distY, dir); break;
+    case 'special': handleSpecialState(distX, distY, dir); break;
+    case 'patrol': handlePatrolState(); break;
+  }
+
+  updateSpecialAbilities();
+
+  if (enemy.stateChangeTimer>180) {
+    chooseNextState(distX, enemy.hp/enemy.maxHp);
+    enemy.stateChangeTimer=0;
+  }
+}
+
+// State handling functions (same as previous, unchanged)
+function handleHuntState(distX, distY, dir) {
+  enemy.facing=dir;
+  if (distX>100) {
+    enemy.vx=enemy.facing*enemy.speed*1.5;
+    if (enemy.onGround && (Math.random()<0.02 || distY>50)) {
+      enemy.vy=-14; enemy.onGround=false;
+    }
+  } else {
+    enemy.vx=enemy.facing*enemy.speed*0.8;
+    if (Math.random()<0.005) { enemy.vx=-enemy.facing*enemy.speed*2; }
+  }
+}
+function handleAttackState(distX, distY, dir) {
+  enemy.facing=dir;
+  if (distX<enemy.attackRange && enemy.attackCooldown===0) {
+    if (Date.now() - enemy.lastAttackTime<1000) enemy.comboCount++;
+    else enemy.comboCount=0;
+    let attackType, damage, duration, cooldown;
+    if (enemy.comboCount>=2) {
+      attackType='mega'; damage=20; duration=40; cooldown=120; enemy.comboCount=0;
+    } else if (Math.random()<0.4) {
+      attackType='heavy'; damage=15; duration=30; cooldown=60;
+    } else {
+      attackType='light'; damage=10; duration=15; cooldown=30;
+    }
+    performAttack(enemy,attackType,damage,duration,cooldown);
+    enemy.lastAttackTime=Date.now();
+  } else {
+    if (distX>enemy.attackRange) { enemy.vx=enemy.facing*enemy.speed*2; }
+    else if (distX<40) { enemy.vx=-enemy.facing*enemy.speed; }
+  }
+}
+function handleRetreatState(distX, distY, dir) {
+  enemy.facing = -dir;
+  enemy.vx=enemy.facing*enemy.speed*1.2;
+  if (distX<120 && enemy.onGround && Math.random()<0.03) {
+    enemy.vy=-16; enemy.onGround=false;
+  }
+  if (distX<80 && Math.random()<0.008 && enemy.attackCooldown===0) {
+    performAttack(enemy,'counter',12,25,70);
+    enemy.facing=dir;
+  }
+}
+function handleSpecialState(distX, distY, dir) {
+  if (!enemy.isFlying && !enemy.isDiveBombing && !enemy.isChargingLaser) {
+    const rand=Math.random();
+    if (rand<0.4 && distX>150) {
+      enemy.isFlying=true; enemy.flyingTimer=120;
+    } else if (rand<0.7 && distY<100) {
+      enemy.isDiveBombing=true; enemy.diveBombTimer=80;
+    } else {
+      enemy.isChargingLaser=true; enemy.laserTimer=60;
+    }
+  }
+}
+function handlePatrolState() {
+  enemy.vx=enemy.patrolDirection*enemy.speed*0.7;
+  if (enemy.x<100 || enemy.x>canvas.width-150 || (enemy.patrolTimer>120 && Math.random()<0.02)) {
+    enemy.patrolDirection*=-1;
+    enemy.facing=enemy.patrolDirection;
+    enemy.patrolTimer=0;
+  }
+  if (enemy.onGround && Math.random()<0.005) {
+    enemy.vy=-10; enemy.onGround=false;
+  }
+}
+function updateSpecialAbilities() {
+  if (enemy.isFlying && enemy.flyingTimer>0) {
+    enemy.vy=Math.sin(enemy.aiTimer*0.1)*2;
+    enemy.vx=enemy.facing*enemy.speed*2;
+    if (enemy.flyingTimer<20) { enemy.vy=8; }
+    if (enemy.flyingTimer===0) { enemy.isFlying=false; }
+  }
+  if (enemy.isDiveBombing && enemy.diveBombTimer>0) {
+    if (enemy.diveBombTimer>40) { enemy.vy=-18; }
+    else { enemy.vy=15; enemy.vx=enemy.facing*enemy.speed*3; }
+    if (enemy.diveBombTimer===0) {
+      enemy.isDiveBombing=false;
+      for (let i=0;i<15;i++) {
+        createParticle(enemy.x+enemy.size/2, enemy.y+enemy.size, '#ff8800', (Math.random()-0.5)*20, -Math.random()*15);
+      }
+    }
+  }
+  if (enemy.isChargingLaser && enemy.laserTimer>0) {
+    enemy.vx*=0.5;
+    if (enemy.laserTimer%5===0) {
+      createParticle(enemy.x+(enemy.facing>0?40:10), enemy.y+15, '#ff0000', 0,0);
+    }
+    if (enemy.laserTimer===1) {
+      fireLaser();
+    }
+    if (enemy.laserTimer===0) { enemy.isChargingLaser=false; }
+  }
+}
+function fireLaser() {
+  for (let i=0;i<20;i++) {
+    const laserX=enemy.x+(enemy.facing>0?enemy.size:0);
+    const laserY=enemy.y+15;
+    createParticle(laserX+i*enemy.facing*15, laserY, '#ff0066', enemy.facing*8, (Math.random()-0.5)*2);
+  }
+  // Check hit
+  const laserRange=300;
+  const inPath= Math.abs(player.y - enemy.y)<30;
+  const inRange= (enemy.facing>0 && player.x>enemy.x && player.x<enemy.x+laserRange) ||
+                 (enemy.facing<0 && player.x<enemy.x && player.x>enemy.x-laserRange);
+  if (inPath && inRange && !player.invincible) {
+    player.hp-=18; player.hp=Math.max(0,player.hp);
+    player.invincible=true; player.invincibleTimer=30;
+    player.vx=enemy.facing*20; player.vy=-5;
+  }
+}
+function chooseNextState(distX, hpRatio) {
+  const r=Math.random();
+  if (distX>400) { enemy.aiState=r<0.3?'patrol':'hunt'; }
+  else if (distX<100) {
+    if (hpRatio<0.3) { enemy.aiState=r<0.4?'retreat':'special'; }
+    else { enemy.aiState=r<0.7?'attack':'special'; }
+  } else { 
+    if (r<0.4) enemy.aiState='hunt';
+    else if (r<0.7) enemy.aiState='attack';
+    else if (r<0.85) enemy.aiState='special';
+    else enemy.aiState='retreat';
+  }
+}
+
+function updatePhysics() {
+  if (!player.onGround) player.vy+=GRAVITY;
+  if (!enemy.onGround) enemy.vy+=GRAVITY;
+  player.x+=player.vx; player.y+=player.vy;
+  enemy.x+=enemy.vx; enemy.y+=enemy.vy;
+
+  handlePlatformCollision(player);
+  handlePlatformCollision(enemy);
+  // Boundaries
+  player.x=Math.max(0, Math.min(canvas.width - player.size, player.x));
+  enemy.x=Math.max(0, Math.min(canvas.width - enemy.size, enemy.x));
+  if (player.y>canvas.height+100) resetPositions();
+  if (enemy.y>canvas.height+100) resetPositions();
+}
+
+function updateTimers() {
+  if (player.invincibleTimer>0) player.invincibleTimer--;
+  if (player.invincibleTimer===0) player.invincible=false;
+}
+
+function checkGameOver() {
+  if (player.hp<=0) {
+    gameState='gameOver';
+    document.getElementById('gameOverText').textContent='DEFEAT!';
+    document.getElementById('winnerText').textContent='Omni-Man has crushed the Smash Snail!';
+    document.getElementById('gameOver').style.display='block';
+  } else if (enemy.hp<=0) {
+    gameState='gameOver';
+    document.getElementById('gameOverText').textContent='VICTORY!';
+    document.getElementById('winnerText').textContent='The Slow Smash Snail triumphs!';
+    document.getElementById('gameOver').style.display='block';
+  }
+}
+
+function updateHealthBars() {
+  document.getElementById('playerHealth').style.width = ((player.hp / player.maxHp) * 100) + '%';
+  document.getElementById('enemyHealth').style.width = ((enemy.hp / enemy.maxHp) * 100) + '%';
+}
+
+function resetPositions() {
+  player.x=100; player.y=0; player.vx=0; player.vy=0; player.hp=player.maxHp; player.invincible=false; player.invincibleTimer=0; player.attacking=false; player.attackTimer=0; player.attackCooldown=0;
+  enemy.x=700; enemy.y=0; enemy.vx=0; enemy.vy=0; enemy.hp=enemy.maxHp; enemy.attacking=false; enemy.attackTimer=0; enemy.attackCooldown=0; enemy.aiState='hunt'; enemy.aiTimer=0; enemy.stateChangeTimer=0; enemy.flyingTimer=0; enemy.isFlying=false; enemy.diveBombTimer=0; enemy.isDiveBombing=false; enemy.laserTimer=0; enemy.isChargingLaser=false; enemy.comboCount=0; enemy.lastAttackTime=0; enemy.patrolDirection=1; enemy.patrolTimer=0; particles.length=0;
+}
+
+function resetGame() {
+  gameState='playing';
+  document.getElementById('gameOver').style.display='none';
+  resetPositions();
+}
+
+// Main game loop
+function gameLoop() {
+  update();
+  draw();
+  requestAnimationFrame(gameLoop);
+}
+
+// Drawing functions
+function drawBackground() {
+  const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+  gradient.addColorStop(0, '#87ceeb');
+  gradient.addColorStop(1, '#98fb98');
+  ctx.fillStyle=gradient;
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle='rgba(255,255,255,0.6)';
+  ctx.beginPath(); ctx.arc(150,100,30,0,Math.PI*2); ctx.arc(180,100,40,0,Math.PI*2); ctx.arc(210,100,30,0,Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(600,150,25,0,Math.PI*2); ctx.arc(625,150,35,0,Math.PI*2); ctx.arc(650,150,25,0,Math.PI*2); ctx.fill();
+}
+
+function drawPlatforms() {
+  ctx.fillStyle='#8b4513';
+  ctx.strokeStyle='#654321';
+  ctx.lineWidth=2;
+  platforms.forEach(p => {
+    ctx.fillRect(p.x,p.y,p.w,p.h);
+    ctx.strokeRect(p.x,p.y,p.w,p.h);
+  });
+}
+
+function drawCharacter(character, color, emoji) {
+  ctx.save();
+  if (character === enemy && omniManImage.complete) {
+    const size = character.size;
+    const centerX = character.x + size/2;
+    const centerY = character.y + size/2;
+    ctx.translate(centerX, centerY);
+    // REMOVE the flip line: ctx.scale(1, -1);
+    ctx.drawImage(omniManImage, -size/2, -size/2, size, size);
+  } else {
+    ctx.fillStyle = color;
+    ctx.fillRect(character.x, character.y, character.size, character.size);
+    ctx.strokeStyle='#000';
+    ctx.lineWidth=2;
+    ctx.strokeRect(character.x, character.y, character.size, character.size);
+    // Eyes
+    ctx.fillStyle='#fff';
+    if (character!==enemy || !enemy.isChargingLaser) {
+      if (character.facing===1) {
+        ctx.fillRect(character.x+30, character.y+10,8,8);
+        ctx.fillRect(character.x+40, character.y+10,8,8);
+        ctx.fillStyle='#000';
+        ctx.fillRect(character.x+33, character.y+13,2,2);
+        ctx.fillRect(character.x+43, character.y+13,2,2);
+      } else {
+        ctx.fillRect(character.x+2, character.y+10,8,8);
+        ctx.fillRect(character.x+12, character.y+10,8,8);
+        ctx.fillStyle='#000';
+        ctx.fillRect(character.x+5, character.y+13,2,2);
+        ctx.fillRect(character.x+15, character.y+13,2,2);
+      }
+    }
+    // Attack effect
+    if (character.attacking && character.attackTimer>0) {
+      ctx.globalAlpha=0.6;
+      ctx.fillStyle= character===player ? '#00ff88':'#ff4444';
+      let attackWidth;
+      if (character.attackType==='mega') attackWidth=45;
+      else if (character.attackType==='super') attackWidth=35;
+      else if (character.attackType==='heavy') attackWidth=25;
+      else attackWidth=20;
+      const attackX= character.facing>0 ? character.x+character.size : character.x-attackWidth;
+      ctx.fillRect(attackX, character.y, attackWidth, character.size);
+      if (character.attackType==='mega') {
+        ctx.fillStyle='#ffff00';
+        ctx.globalAlpha=0.4;
+        ctx.fillRect(attackX-5, character.y-5, attackWidth+10, character.size+10);
+      }
+      ctx.globalAlpha=1;
+    }
+  }
+  ctx.restore();
+}
+function draw() {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  drawBackground();
+  drawPlatforms();
+  drawCharacter(player, '#00ff00', '🐌');
+  drawCharacter(enemy, '#ff0000', '💪');
+  drawParticles();
+}
+
+// Particle system
+function createParticle(x,y,color,vx=0,vy=0) {
+  particles.push({x,y,vx,vy,color,life:30,size:Math.random()*3+2,maxLife:30});
+}
+function updateParticles() {
+  for (let i=particles.length-1;i>=0;i--) {
+    const p=particles[i];
+    p.x+=p.vx;
+    p.y+=p.vy;
+    p.vy+=0.2;
+    p.life--;
+    if (p.life<=0) particles.splice(i,1);
+  }
+}
+function drawParticles() {
+  particles.forEach(p => {
+    ctx.globalAlpha=p.life/p.maxLife;
+    ctx.fillStyle=p.color;
+    ctx.fillRect(p.x - p.size/2, p.y - p.size/2, p.size, p.size);
+  });
+  ctx.globalAlpha=1;
+}
+
+// Input
+document.addEventListener('keydown', (e) => { keys[e.key.toLowerCase()]=true; keys[e.key]=true; });
+document.addEventListener('keyup', (e) => { keys[e.key.toLowerCase()]=false; keys[e.key]=false; });
+
+// Game loop
+function handleMovement() {
+  if (keys['arrowleft'] || keys['a']) { player.vx=-player.speed; player.facing=-1; }
+  else if (keys['arrowright'] || keys['d']) { player.vx=player.speed; player.facing=1; }
+  else { player.vx=0; }
+
+  if ((keys['arrowup'] || keys['w'] || keys[' ']) && (player.onGround || player.doubleJump)) {
+    player.vy=-player.jumpStrength;
+    if (!player.onGround) player.doubleJump=false;
+    player.onGround=false;
+  }
+  if (keys['shift'] && !player.invincible) {
+    player.invincible=true; player.invincibleTimer=15;
+    player.vx=player.facing*8;
+  }
+}
+
+function handleAttacks() {
+  if (player.attackTimer>0) player.attackTimer--;
+  if (player.attackCooldown>0) player.attackCooldown--;
+  if (player.attackTimer===0 && player.attackCooldown===0) {
+    if (keys['z']) performAttack(player,'light',8,15,20);
+    else if (keys['x']) performAttack(player,'heavy',15,25,35);
+    else if (keys['c']) performAttack(player,'super',25,35,60);
+  }
+  if (enemy.attackTimer>0) enemy.attackTimer--;
+  if (enemy.attackCooldown>0) enemy.attackCooldown--;
+}
+
+function performAttack(attacker,type,damage,duration,cooldown) {
+  attacker.attacking=true;
+  attacker.attackType=type;
+  attacker.attackTimer=duration;
+  attacker.attackCooldown=cooldown;
+  attacker.damage=damage;
+}
+
+function handlePlatformCollision(entity) {
+  entity.onGround=false;
+  platforms.forEach(p => {
+    if (
+      entity.x+entity.size > p.x &&
+      entity.x < p.x+p.w &&
+      entity.y+entity.size > p.y &&
+      entity.y+entity.size - entity.vy <= p.y+10
+    ) {
+      entity.y=p.y - entity.size;
+      entity.vy=0;
+      entity.onGround=true;
+      if (entity===player) { player.doubleJump=true; }
+    }
+  });
+}
+
+function checkCombat() {
+  if (player.attacking && player.attackTimer>player.attackTimer*0.3) {
+    const dist=Math.abs(player.x - enemy.x) + Math.abs(player.y - enemy.y);
+    if (dist<80) {
+      enemy.hp -= player.damage;
+      enemy.hp=Math.max(0,enemy.hp);
+      enemy.vx=player.facing*(player.attackType==='super'?25:player.attackType==='heavy'?20:15);
+      enemy.vy=-8;
+      for (let i=0;i<10;i++) {
+        createParticle(enemy.x+enemy.size/2, enemy.y+enemy.size/2, '#ff4444', (Math.random()-0.5)*12, (Math.random()-0.5)*12);
+      }
+      player.attacking=false;
+    }
+  }
+  if (enemy.attacking && enemy.attackTimer>enemy.attackTimer*0.3) {
+    const dist=Math.abs(enemy.x - player.x) + Math.abs(enemy.y - player.y);
+    if (dist<80 && !player.invincible) {
+      player.hp -= enemy.damage;
+      player.hp=Math.max(0,player.hp);
+      player.vx=enemy.facing*18;
+      player.vy=-6;
+      player.invincible=true; player.invincibleTimer=25;
+      for (let i=0;i<8;i++) {
+        createParticle(player.x+player.size/2, player.y+player.size/2, '#00ff88', (Math.random()-0.5)*10, (Math.random()-0.5)*10);
+      }
+      enemy.attacking=false;
+    }
+  }
+}
+
+function updateAI() {
+  if (gameState!=='playing' || enemy.hp<=0) return;
+  const distX=Math.abs(enemy.x - player.x);
+  const distY=Math.abs(enemy.y - player.y);
+  const dir=enemy.x<player.x?1:-1;
+
+  enemy.aiTimer++;
+  enemy.stateChangeTimer++;
+  if (enemy.flyingTimer>0) enemy.flyingTimer--;
+  if (enemy.diveBombTimer>0) enemy.diveBombTimer--;
+  if (enemy.laserTimer>0) enemy.laserTimer--;
+  enemy.patrolTimer++;
+
+  switch(enemy.aiState) {
+    case 'hunt': handleHuntState(distX, distY, dir); break;
+    case 'attack': handleAttackState(distX, distY, dir); break;
+    case 'retreat': handleRetreatState(distX, distY, dir); break;
+    case 'special': handleSpecialState(distX, distY, dir); break;
+    case 'patrol': handlePatrolState(); break;
+  }
+
+  updateSpecialAbilities();
+
+  if (enemy.stateChangeTimer>180) {
+    chooseNextState(distX, enemy.hp/enemy.maxHp);
+    enemy.stateChangeTimer=0;
+  }
+}
+
+// State handlers omitted for brevity (use previous code logic: same as before)
+
+// ... (the rest of your previous code: handleHuntState, handleAttackState, etc.) ...
+
+// Main update and draw
+function update() {
+  if (gameState !== 'playing') return;
+  handleMovement();
+  handleAttacks();
+  updateAI();
+  updatePhysics();
+  updateTimers();
+  checkCombat();
+  updateParticles();
+  updateHealthBars();
+  checkGameOver();
+}
+
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  drawBackground();
+  drawPlatforms();
+  drawCharacter(player, '#00ff00', '🐌');
+  drawCharacter(enemy, '#ff0000', '💪');
+  drawParticles();
+}
+
+// Kickoff
+function gameLoop() {
+  update();
+  draw();
+  requestAnimationFrame(gameLoop);
+}
+
+// Start the game
+gameLoop();
+</script>
 </body>
 </html>
