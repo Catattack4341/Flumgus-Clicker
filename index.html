@@ -121,15 +121,20 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
-// Load Omni-Man image from Base64 (ass "ass pose", flipped upside down)
-const omniManImage = new Image();
-omniManImage.src = "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/f30cb578-0362-44ce-a38d-c4d4508cfb7c/dk0h227-f63de1d2-745e-4749-ae2f-014b11027ddb.png/v1/fill/w_50,h_50,q_80,strp/sd_by_femboylover696969699_dk0h227-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NTAiLCJwYXRoIjoiXC9mXC9mMzBjYjU3OC0wMzYyLTQ0Y2UtYTM4ZC1jNGQ0NTA4Y2ZiN2NcL2RrMGgyMjctZjYzZGUxZDItNzQ1ZS00NzQ5LWFlMmYtMDE0YjExMDI3ZGRiLnBuZyIsIndpZHRoIjoiPD01MCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.eI8DsTmNOT5rZGCwaWxUMu2oVQFw_O1xPHCQ26H1pJk";
+let snailImageLoaded = false;
+
+// Load Snail image (you can replace with any snail image URL)
 const snailImage = new Image();
 snailImage.onload = () => {
   snailImageLoaded = true;
 };
-snailImage.src = "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/f30cb578-0362-44ce-a38d-c4d4508cfb7c/dk0h3kv-cf53e658-6d42-40a7-9a78-9c431600237f.png/v1/fill/w_50,h_50,q_80,strp/sdsddssdkibidi_by_femboylover696969699_dk0h3kv-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NTAiLCJwYXRoIjoiXC9mXC9mMzBjYjU3OC0wMzYyLTQ0Y2UtYTM4ZC1jNGQ0NTA4Y2ZiN2NcL2RrMGgza3YtY2Y1M2U2NTgtNmQ0Mi00MGE3LTlhNzgtOWM0MzE2MDAyMzdmLnBuZyIsIndpZHRoIjoiPD01MCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.N6K9R1M2CaozK9SDhmGWADD3InUdB2xVuPf2w6WWDs4"
-// Game constantsa
+snailImage.src = 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/f30cb578-0362-44ce-a38d-c4d4508cfb7c/dk0h3kv-cf53e658-6d42-40a7-9a78-9c431600237f.png/v1/fill/w_50,h_50,q_80,strp/sdsddssdkibidi_by_femboylover696969699_dk0h3kv-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NTAiLCJwYXRoIjoiXC9mXC9mMzBjYjU3OC0wMzYyLTQ0Y2UtYTM4ZC1jNGQ0NTA4Y2ZiN2NcL2RrMGgza3YtY2Y1M2U2NTgtNmQ0Mi00MGE3LTlhNzgtOWM0MzE2MDAyMzdmLnBuZyIsIndpZHRoIjoiPD01MCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.N6K9R1M2CaozK9SDhmGWADD3InUdB2xVuPf2w6WWDs4'; // Replace with desired snail image URL
+
+// Load Omni-Man image from Base64 (upside down "ass pose")
+const omniManImage = new Image();
+omniManImage.src = "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/f30cb578-0362-44ce-a38d-c4d4508cfb7c/dk0h227-f63de1d2-745e-4749-ae2f-014b11027ddb.png/v1/fill/w_50,h_50,q_80,strp/sd_by_femboylover696969699_dk0h227-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NTAiLCJwYXRoIjoiXC9mXC9mMzBjYjU3OC0wMzYyLTQ0Y2UtYTM4ZC1jNGQ0NTA4Y2ZiN2NcL2RrMGgyMjctZjYzZGUxZDItNzQ1ZS00NzQ5LWFlMmYtMDE0YjExMDI3ZGRiLnBuZyIsIndpZHRoIjoiPD01MCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.eI8DsTmNOT5rZGCwaWxUMu2oVQFw_O1xPHCQ26H1pJk";
+
+// Game constants
 const STAGE_Y = 520;
 const CHARACTER_SIZE = 50;
 const GRAVITY = 0.5;
@@ -205,8 +210,6 @@ const platforms = [
   {x: 337, y: 393.625, w: 120, h: 15},
   {x: 0, y: 341.625, w: 120, h: 15},
   {x: 691, y: 340.625, w: 120, h: 15}
-
-
 ];
 
 const keys = {};
@@ -222,7 +225,7 @@ document.addEventListener('keyup', (e) => {
   keys[e.key] = false;
 });
 
-// Particle system
+// Particle system functions
 function createParticle(x, y, color, vx = 0, vy = 0) {
   particles.push({
     x, y, vx, vy, color, 
@@ -247,13 +250,13 @@ function drawParticles() {
   particles.forEach(p => {
     ctx.globalAlpha = p.life / p.maxLife;
     ctx.fillStyle = p.color;
-    ctx.fillRect(p.x - p.size/2, p.y - p.size/2, p.size, p.size);
+    ctx.fillRect(p.x - p.size / 2, p.y - p.size / 2, p.size, p.size);
   });
   ctx.globalAlpha = 1;
 }
 
+// Handle movement
 function handleMovement() {
-  // Player movement
   if (keys['arrowleft'] || keys['a']) {
     player.vx = -player.speed;
     player.facing = -1;
@@ -264,23 +267,21 @@ function handleMovement() {
     player.vx = 0;
   }
 
-  // Player jump
   if ((keys['arrowup'] || keys['w'] || keys[' ']) && (player.onGround || player.doubleJump)) {
     player.vy = -player.jumpStrength;
     if (!player.onGround) player.doubleJump = false;
     player.onGround = false;
   }
 
-  // Player dodge
   if (keys['shift'] && !player.invincible) {
     player.invincible = true;
     player.invincibleTimer = 40;
-    player.vx = player.facing * 10099; // Dodge roll movement
+    player.vx = player.facing * 10; // Dashing
   }
 }
 
+// Handle attacks
 function handleAttacks() {
-  // Player attacks
   if (player.attackTimer > 0) player.attackTimer--;
   if (player.attackCooldown > 0) player.attackCooldown--;
 
@@ -290,7 +291,6 @@ function handleAttacks() {
     else if (keys['c']) performAttack(player, 'super', 25, 35, 60);
   }
 
-  // Enemy attacks
   if (enemy.attackTimer > 0) enemy.attackTimer--;
   if (enemy.attackCooldown > 0) enemy.attackCooldown--;
 }
@@ -303,52 +303,47 @@ function performAttack(attacker, type, damage, duration, cooldown) {
   attacker.damage = damage;
 }
 
+// Collision with platforms
 function handlePlatformCollision(entity) {
   entity.onGround = false;
-
-  platforms.forEach(platform => {
+  platforms.forEach(p => {
     if (
-      entity.x + entity.size > platform.x &&
-      entity.x < platform.x + platform.w &&
-      entity.y + entity.size > platform.y &&
-      entity.y + entity.size - entity.vy <= platform.y + 10
+      entity.x + entity.size > p.x &&
+      entity.x < p.x + p.w &&
+      entity.y + entity.size > p.y &&
+      entity.y + entity.size - entity.vy <= p.y + 10
     ) {
-      entity.y = platform.y - entity.size;
+      entity.y = p.y - entity.size;
       entity.vy = 0;
       entity.onGround = true;
       if (entity === player) {
-        entity.doubleJump = true;
+        player.doubleJump = true;
       }
     }
   });
 }
 
+// Combat logic
 function checkCombat() {
   // Player hits enemy
-  if (player.attacking && player.attackTimer > player.attackTimer * 0.3) {
-    const distance = Math.abs(player.x - enemy.x) + Math.abs(player.y - enemy.y);
-    if (distance < 80) {
+  if (player.attacking && player.attackTimer > 0.3 * player.attackTimer) {
+    const dist = Math.abs(player.x - enemy.x) + Math.abs(player.y - enemy.y);
+    if (dist < 80) {
       enemy.hp -= player.damage;
       enemy.hp = Math.max(0, enemy.hp);
       enemy.vx = player.facing * (player.attackType === 'super' ? 25 : player.attackType === 'heavy' ? 20 : 15);
       enemy.vy = -8;
       for (let i = 0; i < 10; i++) {
-        createParticle(
-          enemy.x + enemy.size / 2,
-          enemy.y + enemy.size / 2,
-          '#ff4444',
-          (Math.random() - 0.5) * 12,
-          (Math.random() - 0.5) * 12
-        );
+        createParticle(enemy.x + enemy.size / 2, enemy.y + enemy.size / 2, '#ff4444', (Math.random() - 0.5) * 12, (Math.random() - 0.5) * 12);
       }
       player.attacking = false;
     }
   }
 
   // Enemy hits player
-  if (enemy.attacking && enemy.attackTimer > enemy.attackTimer * 0.3) {
-    const distance = Math.abs(enemy.x - player.x) + Math.abs(enemy.y - player.y);
-    if (distance < 80 && !player.invincible) {
+  if (enemy.attacking && enemy.attackTimer > 0.3 * enemy.attackTimer) {
+    const dist = Math.abs(enemy.x - player.x) + Math.abs(enemy.y - player.y);
+    if (dist < 80 && !player.invincible) {
       player.hp -= enemy.damage;
       player.hp = Math.max(0, player.hp);
       player.vx = enemy.facing * 18;
@@ -356,22 +351,16 @@ function checkCombat() {
       player.invincible = true;
       player.invincibleTimer = 25;
       for (let i = 0; i < 8; i++) {
-        createParticle(
-          player.x + player.size / 2,
-          player.y + player.size / 2,
-          '#00ff88',
-          (Math.random() - 0.5) * 10,
-          (Math.random() - 0.5) * 10
-        );
+        createParticle(player.x + player.size / 2, player.y + player.size / 2, '#00ff88', (Math.random() - 0.5) * 10, (Math.random() - 0.5) * 10);
       }
       enemy.attacking = false;
     }
   }
 }
 
+// Simple AI for enemy
 function updateAI() {
   if (gameState !== 'playing' || enemy.hp <= 0) return;
-
   const distX = Math.abs(enemy.x - player.x);
   const distY = Math.abs(enemy.y - player.y);
   const dir = enemy.x < player.x ? 1 : -1;
@@ -383,618 +372,107 @@ function updateAI() {
   if (enemy.laserTimer > 0) enemy.laserTimer--;
   enemy.patrolTimer++;
 
-  switch (enemy.aiState) {
-    case 'hunt': handleHuntState(distX, distY, dir); break;
-    case 'attack': handleAttackState(distX, distY, dir); break;
-    case 'retreat': handleRetreatState(distX, distY, dir); break;
-    case 'special': handleSpecialState(distX, distY, dir); break;
-    case 'patrol': handlePatrolState(); break;
-  }
-
-  updateSpecialAbilities();
-
-  if (enemy.stateChangeTimer > 180) {
-    chooseNextState(distX, enemy.hp / enemy.maxHp);
-    enemy.stateChangeTimer = 0;
-  }
-}
-
-// State handling functions (same as previous, unchanged)
-function handleHuntState(distX, distY, dir) {
-  enemy.facing = dir;
-  if (distX > 100) {
-    enemy.vx = enemy.facing * enemy.speed * 1.5;
-    if (enemy.onGround && (Math.random() < 0.02 || distY > 50)) {
+  // Basic state logic
+  if (distX > 200) {
+    // Hunt
+    enemy.vx = dir * enemy.speed;
+    if (enemy.onGround && Math.random() < 0.01) {
       enemy.vy = -14;
       enemy.onGround = false;
     }
   } else {
-    enemy.vx = enemy.facing * enemy.speed * 0.8;
-    if (Math.random() < 0.005) { enemy.vx = -enemy.facing * enemy.speed * 2; }
-  }
-}
-
-function handleAttackState(distX, distY, dir) {
-  enemy.facing = dir;
-  if (distX < enemy.attackRange && enemy.attackCooldown === 0) {
-    if (Date.now() - enemy.lastAttackTime < 1000) enemy.comboCount++;
-    else enemy.comboCount = 0;
-    let attackType, damage, duration, cooldown;
-    if (enemy.comboCount >= 2) {
-      attackType = 'mega'; damage=20; duration=40; cooldown=120; enemy.comboCount=0;
-    } else if (Math.random() < 0.4) {
-      attackType='heavy'; damage=15; duration=30; cooldown=60;
+    // Attack
+    if (distX < enemy.attackRange && enemy.attackCooldown === 0) {
+      performAttack(enemy, 'light', 10, 15, 30);
     } else {
-      attackType='light'; damage=10; duration=15; cooldown=30;
-    }
-    performAttack(enemy, attackType, damage, duration, cooldown);
-    enemy.lastAttackTime=Date.now();
-  } else {
-    if (distX > enemy.attackRange) { enemy.vx=enemy.facing*enemy.speed*2; }
-    else if (distX<40) { enemy.vx=-enemy.facing*enemy.speed; }
-  }
-}
-
-function handleRetreatState(distX, distY, dir) {
-  enemy.facing = -dir;
-  enemy.vx=enemy.facing*enemy.speed*1.2;
-  if (distX<120 && enemy.onGround && Math.random()<0.03) {
-    enemy.vy=-16; enemy.onGround=false;
-  }
-  if (distX<80 && Math.random()<0.008 && enemy.attackCooldown===0) {
-    performAttack(enemy,'counter',12,25,70);
-    enemy.facing=dir;
-  }
-}
-
-function handleSpecialState(distX, distY, dir) {
-  if (!enemy.isFlying && !enemy.isDiveBombing && !enemy.isChargingaLaser) {
-    const rand=Math.random();
-    if (rand<0.4 && distX>150) {
-      enemy.isFlying=true; enemy.flyingTimer=120;
-    } else if (rand<0.7 && distY<100) {
-      enemy.isDiveBombing=true; enemy.diveBombTimer=80;
-    } else {
-      enemy.isChargingLaser=true; enemy.laserTimer=60;
+      enemy.vx = dir * enemy.speed * 0.8;
     }
   }
-}
 
-function handlePatrolState() {
-  enemy.vx=enemy.patrolDirection*enemy.speed*0.7;
-  if (enemy.x<100 || enemy.x>canvas.width-150 || (enemy.patrolTimer>120 && Math.random()<0.02)) {
-    enemy.patrolDirection*=-1;
-    enemy.facing=enemy.patrolDirection;
-    enemy.patrolTimer=0;
-  }
-  if (enemy.onGround && Math.random()<0.005) {
-    enemy.vy=-10; enemy.onGround=false;
+  // Change state periodically
+  if (enemy.stateChangeTimer > 180) {
+    enemy.aiState = 'hunt';
+    enemy.stateChangeTimer = 0;
   }
 }
 
-function updateSpecialAbilities() {
-  if (enemy.isFlying && enemy.flyingTimer>0) {
-    enemy.vy=Math.sin(enemy.aiTimer*0.1)*2;
-    enemy.vx=enemy.facing*enemy.speed*2;
-    if (enemy.flyingTimer<20) { enemy.vy=8; }
-    if (enemy.flyingTimer===0) { enemy.isFlying=false; }
-  }
-  if (enemy.isDiveBombing && enemy.diveBombTimer>0) {
-    if (enemy.diveBombTimer>40) { enemy.vy=-18; }
-    else { enemy.vy=15; enemy.vx=enemy.facing*enemy.speed*3; }
-    if (enemy.diveBombTimer===0) {
-      enemy.isDiveBombing=false;
-      for (let i=0;i<15;i++) {
-        createParticle(enemy.x+enemy.size/2, enemy.y+enemy.size, '#ff8800', (Math.random()-0.5)*20, -Math.random()*15);
-      }
-    }
-  }
-  if (enemy.isChargingLaser && enemy.laserTimer>0) {
-    enemy.vx*=0.5;
-    if (enemy.laserTimer%5===0) {
-      createParticle(enemy.x+(enemy.facing>0?40:10), enemy.y+15, '#ff0000', 0,0);
-    }
-    if (enemy.laserTimer===1) {
-      fireLaser();
-    }
-    if (enemy.laserTimer===0) { enemy.isChargingLaser=false; }
-  }
-}
-
-function fireLaser() {
-  for (let i=0;i<20;i++) {
-    const laserX=enemy.x+(enemy.facing>0?enemy.size:0);
-    const laserY=enemy.y+15;
-    createParticle(laserX+i*enemy.facing*15, laserY, '#ff0066', enemy.facing*8, (Math.random()-0.5)*2);
-  }
-  // Check hit
-  const laserRange=300;
-  const inPath= Math.abs(player.y - enemy.y)<30;
-  const inRange= (enemy.facing>0 && player.x>enemy.x && player.x<enemy.x+laserRange) ||
-                 (enemy.facing<0 && player.x<enemy.x && player.x>enemy.x-laserRange);
-  if (inPath && inRange && !player.invincible) {
-    player.hp-=18; player.hp=Math.max(0,player.hp);
-    player.invincible=true; player.invincibleTimer=30;
-    player.vx=enemy.facing*20; player.vy=-5;
-  }
-}
-
-function chooseNextState(distX, hpRatio) {
-  const r=Math.random();
-  if (distX>400) { enemy.aiState=r<0.3?'patrol':'hunt'; }
-  else if (distX<100) {
-    if (hpRatio<0.3) { enemy.aiState=r<0.4?'retreat':'special'; }
-    else { enemy.aiState=r<0.7?'attack':'special'; }
-  } else { 
-    if (r<0.4) enemy.aiState='hunt';
-    else if (r<0.7) enemy.aiState='attack';
-    else if (r<0.85) enemy.aiState='special';
-    else enemy.aiState='retreat';
-  }
-}
-
+// Physics update
 function updatePhysics() {
-  if (!player.onGround) player.vy+=GRAVITY;
-  if (!enemy.onGround) enemy.vy+=GRAVITY;
-  player.x+=player.vx; player.y+=player.vy;
-  enemy.x+=enemy.vx; enemy.y+=enemy.vy;
+  if (!player.onGround) player.vy += GRAVITY;
+  if (!enemy.onGround) enemy.vy += GRAVITY;
+  player.x += player.vx;
+  player.y += player.vy;
+  enemy.x += enemy.vx;
+  enemy.y += enemy.vy;
 
   handlePlatformCollision(player);
   handlePlatformCollision(enemy);
+
   // Boundaries
-  player.x=Math.max(0, Math.min(canvas.width - player.size, player.x));
-  enemy.x=Math.max(0, Math.min(canvas.width - enemy.size, enemy.x));
-  if (player.y>canvas.height+100) resetPositions();
-  if (enemy.y>canvas.height+100) resetPositions();
+  player.x = Math.max(0, Math.min(canvas.width - player.size, player.x));
+  enemy.x = Math.max(0, Math.min(canvas.width - enemy.size, enemy.x));
+
+  if (player.y > canvas.height + 100) resetPositions();
+  if (enemy.y > canvas.height + 100) resetPositions();
 }
 
+// Timer updates
 function updateTimers() {
-  if (player.invincibleTimer>0) player.invincibleTimer--;
-  if (player.invincibleTimer===0) player.invincible=false;
+  if (player.invincibleTimer > 0) player.invincibleTimer--;
+  if (player.invincibleTimer === 0) player.invincible = false;
 }
 
+// Check for game over
 function checkGameOver() {
-  if (player.hp<=0) {
-    gameState='gameOver';
-    document.getElementById('gameOverText').textContent='DEFEAT!';
-    document.getElementById('winnerText').textContent='Omni-Man has crushed the Smash Snail!';
-    document.getElementById('gameOver').style.display='block';
-  } else if (enemy.hp<=0) {
-    gameState='gameOver';
-    document.getElementById('gameOverText').textContent='VICTORY!';
-    document.getElementById('winnerText').textContent='The Slow Smash Snail triumphs!';
-    document.getElementById('gameOver').style.display='block';
+  if (player.hp <= 0) {
+    gameState = 'gameOver';
+    document.getElementById('gameOverText').textContent = 'YOU SUCK';
+    document.getElementById('winnerText').textContent = 'you suck';
+    document.getElementById('gameOver').style.display = 'block';
+  } else if (enemy.hp <= 0) {
+    gameState = 'gameOver';
+    document.getElementById('gameOverText').textContent = 'Liar!';
+    document.getElementById('winnerText').textContent = 'Nuh uh i didnt see it happen try again';
+    document.getElementById('gameOver').style.display = 'block';
   }
 }
 
+// Update health bars
 function updateHealthBars() {
   document.getElementById('playerHealth').style.width = ((player.hp / player.maxHp) * 100) + '%';
   document.getElementById('enemyHealth').style.width = ((enemy.hp / enemy.maxHp) * 100) + '%';
 }
 
+// Reset positions
 function resetPositions() {
-  player.x=100; player.y=0; player.vx=0; player.vy=0; player.hp=player.maxHp; player.invincible=false; player.invincibleTimer=0; player.attacking=false; player.attackTimer=0; player.attackCooldown=0;
-  enemy.x=700; enemy.y=0; enemy.vx=0; enemy.vy=0; enemy.hp=enemy.maxHp; enemy.attacking=false; enemy.attackTimer=0; enemy.attackCooldown=0; enemy.aiState='hunt'; enemy.aiTimer=0; enemy.stateChangeTimer=0; enemy.flyingTimer=0; enemy.isFlying=false; enemy.diveBombTimer=0; enemy.isDiveBombing=false; enemy.laserTimer=0; enemy.isChargingLaser=false; enemy.comboCount=0; enemy.lastAttackTime=0; enemy.patrolDirection=1; enemy.patrolTimer=0; particles.length=0;
+  player.x = 100;
+  player.y = 0;
+  player.vx = 0;
+  player.vy = 0;
+  player.hp = player.maxHp;
+  player.invincible = false;
+  player.invincibleTimer = 0;
+  player.attacking = false;
+  player.attackTimer = 0;
+  player.attackCooldown = 0;
+
+  enemy.x = 700;
+  enemy.y = 0;
+  enemy.vx = 0;
+  enemy.vy = 0;
+  enemy.hp = enemy.maxHp;
+  enemy.attacking = false;
+  enemy.attackTimer = 0;
+  enemy.attackCooldown = 0;
+  enemy.aiState = 'hunt';
+  enemy.aiTimer = 0;    0;
+  particles.length = 0;
 }
 
+// Reset game
 function resetGame() {
-  gameState='playing';
-  document.getElementById('gameOver').style.display='none';
-  resetPositions();
-}
-
-function drawBackground() {
-  // Sky
-  const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-  gradient.addColorStop(0, '#87ceeb');
-  gradient.addColorStop(1, '#98fb98');
-  ctx.fillStyle=gradient;
-  ctx.fillRect(0,0,canvas.width,canvas.height);
-  // Clouds
-  ctx.fillStyle='rgba(255,255,255,0.6)';
-  ctx.beginPath(); ctx.arc(150,100,30,0,Math.PI*2); ctx.arc(180,100,40,0,Math.PI*2); ctx.arc(210,100,30,0,Math.PI*2); ctx.fill();
-  ctx.beginPath(); ctx.arc(600,150,25,0,Math.PI*2); ctx.arc(625,150,35,0,Math.PI*2); ctx.arc(650,150,25,0,Math.PI*2); ctx.fill();
-}
-
-function drawPlatforms() {
-  ctx.fillStyle='#8b4513';
-  ctx.strokeStyle='#654321';
-  ctx.lineWidth=2;
-  platforms.forEach(p => {
-    ctx.fillRect(p.x,p.y,p.w,p.h);
-    ctx.strokeRect(p.x,p.y,p.w,p.h);
-  });
-}
-
-function drawCharacter(character, color, emoji) {
-  ctx.save();
-  if (character === enemy && omniManImage.complete) {
-    // Draw Omni-Man upside down for "ass pose"
-    const size = character.size;
-    const centerX = character.x + size/2;
-    const centerY = character.y + size/2;
-    ctx.translate(centerX, centerY);
-    ctx.scale(1, -1); // Flip vertically
-    ctx.drawImage(omniManImage, -size/2, -size/2, size, size);
-  } else {
-    // Draw snail image if loaded, else fallback rectangle
-    if (character === player && snailImageLoaded) {
-      ctx.drawImage(snailImage, character.x, character.y, character.size, character.size);
-    } else {
-      // Fallback rectangle
-      ctx.fillStyle = color;
-      ctx.fillRect(character.x, character.y, character.size, character.size);
-      ctx.strokeStyle='#000';
-      ctx.lineWidth=2;
-      ctx.strokeRect(character.x, character.y, character.size, character.size);
-      
-      // Eyes
-      ctx.fillStyle='#fff';
-      if (character!==enemy || !enemy.isChargingLaser) {
-        if (character.facing===1) {
-          ctx.fillRect(character.x+30, character.y+10,8,8);
-          ctx.fillRect(character.x+40, character.y+10,8,8);
-          ctx.fillStyle='#000';
-          ctx.fillRect(character.x+33, character.y+13,2,2);
-          ctx.fillRect(character.x+43, character.y+13,2,2);
-        } else {
-          ctx.fillRect(character.x+2, character.y+10,8,8);
-          ctx.fillRect(character.x+12, character.y+10,8,8);
-          ctx.fillStyle='#000';
-          ctx.fillRect(character.x+5, character.y+13,2,2);
-          ctx.fillRect(character.x+15, character.y+13,2,2);
-        }
-      }
-
-      // Attack effect (if attacking)
-      if (character.attacking && character.attackTimer > 0) {
-        ctx.globalAlpha=0.6;
-        ctx.fillStyle= character===player ? '#00ff88':'#ff4444';
-        let attackWidth;
-        if (character.attackType==='mega') attackWidth=45;
-        else if (character.attackType==='super') attackWidth=35;
-        else if (character.attackType==='heavy') attackWidth=25;
-        else attackWidth=20;
-        const attackX= character.facing>0 ? character.x+character.size : character.x-attackWidth;
-        ctx.fillRect(attackX, character.y, attackWidth, character.size);
-        if (character.attackType==='mega') {
-          ctx.fillStyle='#ffff00';
-          ctx.globalAlpha=0.4;
-          ctx.fillRect(attackX-5, character.y-5, attackWidth+10, character.size+10);
-        }
-        ctx.globalAlpha=1;
-      }
-    }
-  }
-  ctx.restore();
-}
-function draw() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  drawBackground();
-  drawPlatforms();
-  drawCharacter(player, '#00ff00', '🐌');
-  drawCharacter(enemy, '#ff0000', '💪');
-  drawParticles();
-}
-
-// Particle functions
-function createParticle(x, y, color, vx=0, vy=0) {
-  particles.push({x, y, vx, vy, color, life:30, size:Math.random()*3+2, maxLife:30});
-}
-function updateParticles() {
-  for (let i=particles.length-1;i>=0;i--) {
-    const p=particles[i];
-    p.x+=p.vx;
-    p.y+=p.vy;
-    p.vy+=0.2;
-    p.life--;
-    if (p.life<=0) particles.splice(i,1);
-  }
-}
-function drawParticles() {
-  particles.forEach(p => {
-    ctx.globalAlpha=p.life/p.maxLife;
-    ctx.fillStyle=p.color;
-    ctx.fillRect(p.x - p.size/2, p.y - p.size/2, p.size, p.size);
-  });
-  ctx.globalAlpha=1;
-}
-
-// Input handling
-document.addEventListener('keydown', (e) => { keys[e.key.toLowerCase()]=true; keys[e.key]=true; });
-document.addEventListener('keyup', (e) => { keys[e.key.toLowerCase()]=false; keys[e.key]=false; });
-
-// Game functions
-function handleMovement() {
-  if (keys['arrowleft'] || keys['a']) { player.vx=-player.speed; player.facing=-1; }
-  else if (keys['arrowright'] || keys['d']) { player.vx=player.speed; player.facing=1; }
-  else { player.vx=0; }
-
-  if ((keys['arrowup'] || keys['w'] || keys[' ']) && (player.onGround || player.doubleJump)) {
-    player.vy=-player.jumpStrength;
-    if (!player.onGround) player.doubleJump=false;
-    player.onGround=false;
-  }
-
-  if (keys['shift'] && !player.invincible) {
-    player.invincible=true; player.invincibleTimer=15;
-    player.vx=player.facing*8;
-  }
-}
-
-function handleAttacks() {
-  if (player.attackTimer>0) player.attackTimer--;
-  if (player.attackCooldown>0) player.attackCooldown--;
-
-  if (player.attackTimer===0 && player.attackCooldown===0) {
-    if (keys['z']) performAttack(player,'light',8,15,20);
-    else if (keys['x']) performAttack(player,'heavy',15,25,35);
-    else if (keys['c']) performAttack(player,'super',25,35,60);
-  }
-
-  if (enemy.attackTimer>0) enemy.attackTimer--;
-  if (enemy.attackCooldown>0) enemy.attackCooldown--;
-}
-
-function performAttack(attacker,type,damage,duration,cooldown) {
-  attacker.attacking=true;
-  attacker.attackType=type;
-  attacker.attackTimer=duration;
-  attacker.attackCooldown=cooldown;
-  attacker.damage=damage;
-}
-
-function handlePlatformCollision(entity) {
-  entity.onGround=false;
-  platforms.forEach(p => {
-    if (
-      entity.x+entity.size > p.x &&
-      entity.x < p.x+p.w &&
-      entity.y+entity.size > p.y &&
-      entity.y+entity.size - entity.vy <= p.y+10
-    ) {
-      entity.y=p.y - entity.size;
-      entity.vy=0;
-      entity.onGround=true;
-      if (entity===player) { player.doubleJump=true; }
-    }
-  });
-}
-
-function checkCombat() {
-  // Player hits enemy
-  if (player.attacking && player.attackTimer>player.attackTimer*0.3) {
-    const dist=Math.abs(player.x - enemy.x) + Math.abs(player.y - enemy.y);
-    if (dist<80) {
-      enemy.hp -= player.damage;
-      enemy.hp=Math.max(0,enemy.hp);
-      enemy.vx=player.facing*(player.attackType==='super'?25:player.attackType==='heavy'?20:15);
-      enemy.vy=-8;
-      for (let i=0;i<10;i++) {
-        createParticle(enemy.x+enemy.size/2, enemy.y+enemy.size/2, '#ff4444', (Math.random()-0.5)*12, (Math.random()-0.5)*12);
-      }
-      player.attacking=false;
-    }
-  }
-  // Enemy hits player
-  if (enemy.attacking && enemy.attackTimer>enemy.attackTimer*0.3) {
-    const dist=Math.abs(enemy.x - player.x) + Math.abs(enemy.y - player.y);
-    if (dist<80 && !player.invincible) {
-      player.hp -= enemy.damage;
-      player.hp=Math.max(0,player.hp);
-      player.vx=enemy.facing*18;
-      player.vy=-6;
-      player.invincible=true; player.invincibleTimer=25;
-      for (let i=0;i<8;i++) {
-        createParticle(player.x+player.size/2, player.y+player.size/2, '#00ff88', (Math.random()-0.5)*10, (Math.random()-0.5)*10);
-      }
-      enemy.attacking=false;
-    }
-  }
-}
-
-function updateAI() {
-  if (gameState!=='playing' || enemy.hp<=0) return;
-  const distX=Math.abs(enemy.x - player.x);
-  const distY=Math.abs(enemy.y - player.y);
-  const dir=enemy.x<player.x?1:-1;
-
-  enemy.aiTimer++;
-  enemy.stateChangeTimer++;
-  if (enemy.flyingTimer>0) enemy.flyingTimer--;
-  if (enemy.diveBombTimer>0) enemy.diveBombTimer--;
-  if (enemy.laserTimer>0) enemy.laserTimer--;
-  enemy.patrolTimer++;
-
-  switch(enemy.aiState) {
-    case 'hunt': handleHuntState(distX, distY, dir); break;
-    case 'attack': handleAttackState(distX, distY, dir); break;
-    case 'retreat': handleRetreatState(distX, distY, dir); break;
-    case 'special': handleSpecialState(distX, distY, dir); break;
-    case 'patrol': handlePatrolState(); break;
-  }
-
-  updateSpecialAbilities();
-
-  if (enemy.stateChangeTimer>180) {
-    chooseNextState(distX, enemy.hp/enemy.maxHp);
-    enemy.stateChangeTimer=0;
-  }
-}
-
-// State handling functions (same as previous, unchanged)
-function handleHuntState(distX, distY, dir) {
-  enemy.facing=dir;
-  if (distX>100) {
-    enemy.vx=enemy.facing*enemy.speed*1.5;
-    if (enemy.onGround && (Math.random()<0.02 || distY>50)) {
-      enemy.vy=-14; enemy.onGround=false;
-    }
-  } else {
-    enemy.vx=enemy.facing*enemy.speed*0.8;
-    if (Math.random()<0.005) { enemy.vx=-enemy.facing*enemy.speed*2; }
-  }
-}
-function handleAttackState(distX, distY, dir) {
-  enemy.facing=dir;
-  if (distX<enemy.attackRange && enemy.attackCooldown===0) {
-    if (Date.now() - enemy.lastAttackTime<1000) enemy.comboCount++;
-    else enemy.comboCount=0;
-    let attackType, damage, duration, cooldown;
-    if (enemy.comboCount>=2) {
-      attackType='mega'; damage=20; duration=40; cooldown=120; enemy.comboCount=0;
-    } else if (Math.random()<0.4) {
-      attackType='heavy'; damage=15; duration=30; cooldown=60;
-    } else {
-      attackType='light'; damage=10; duration=15; cooldown=30;
-    }
-    performAttack(enemy,attackType,damage,duration,cooldown);
-    enemy.lastAttackTime=Date.now();
-  } else {
-    if (distX>enemy.attackRange) { enemy.vx=enemy.facing*enemy.speed*2; }
-    else if (distX<40) { enemy.vx=-enemy.facing*enemy.speed; }
-  }
-}
-function handleRetreatState(distX, distY, dir) {
-  enemy.facing = -dir;
-  enemy.vx=enemy.facing*enemy.speed*1.2;
-  if (distX<120 && enemy.onGround && Math.random()<0.03) {
-    enemy.vy=-16; enemy.onGround=false;
-  }
-  if (distX<80 && Math.random()<0.008 && enemy.attackCooldown===0) {
-    performAttack(enemy,'counter',12,25,70);
-    enemy.facing=dir;
-  }
-}
-function handleSpecialState(distX, distY, dir) {
-  if (!enemy.isFlying && !enemy.isDiveBombing && !enemy.isChargingLaser) {
-    const rand=Math.random();
-    if (rand<0.4 && distX>150) {
-      enemy.isFlying=true; enemy.flyingTimer=120;
-    } else if (rand<0.7 && distY<100) {
-      enemy.isDiveBombing=true; enemy.diveBombTimer=80;
-    } else {
-      enemy.isChargingLaser=true; enemy.laserTimer=60;
-    }
-  }
-}
-function handlePatrolState() {
-  enemy.vx=enemy.patrolDirection*enemy.speed*0.7;
-  if (enemy.x<100 || enemy.x>canvas.width-150 || (enemy.patrolTimer>120 && Math.random()<0.02)) {
-    enemy.patrolDirection*=-1;
-    enemy.facing=enemy.patrolDirection;
-    enemy.patrolTimer=0;
-  }
-  if (enemy.onGround && Math.random()<0.005) {
-    enemy.vy=-10; enemy.onGround=false;
-  }
-}
-function updateSpecialAbilities() {
-  if (enemy.isFlying && enemy.flyingTimer>0) {
-    enemy.vy=Math.sin(enemy.aiTimer*0.1)*2;
-    enemy.vx=enemy.facing*enemy.speed*2;
-    if (enemy.flyingTimer<20) { enemy.vy=8; }
-    if (enemy.flyingTimer===0) { enemy.isFlying=false; }
-  }
-  if (enemy.isDiveBombing && enemy.diveBombTimer>0) {
-    if (enemy.diveBombTimer>40) { enemy.vy=-18; }
-    else { enemy.vy=15; enemy.vx=enemy.facing*enemy.speed*3; }
-    if (enemy.diveBombTimer===0) {
-      enemy.isDiveBombing=false;
-      for (let i=0;i<15;i++) {
-        createParticle(enemy.x+enemy.size/2, enemy.y+enemy.size, '#ff8800', (Math.random()-0.5)*20, -Math.random()*15);
-      }
-    }
-  }
-  if (enemy.isChargingLaser && enemy.laserTimer>0) {
-    enemy.vx*=0.5;
-    if (enemy.laserTimer%5===0) {
-      createParticle(enemy.x+(enemy.facing>0?40:10), enemy.y+15, '#ff0000', 0,0);
-    }
-    if (enemy.laserTimer===1) {
-      fireLaser();
-    }
-    if (enemy.laserTimer===0) { enemy.isChargingLaser=false; }
-  }
-}
-function fireLaser() {
-  for (let i=0;i<20;i++) {
-    const laserX=enemy.x+(enemy.facing>0?enemy.size:0);
-    const laserY=enemy.y+15;
-    createParticle(laserX+i*enemy.facing*15, laserY, '#ff0066', enemy.facing*8, (Math.random()-0.5)*2);
-  }
-  // Check hit
-  const laserRange=300;
-  const inPath= Math.abs(player.y - enemy.y)<30;
-  const inRange= (enemy.facing>0 && player.x>enemy.x && player.x<enemy.x+laserRange) ||
-                 (enemy.facing<0 && player.x<enemy.x && player.x>enemy.x-laserRange);
-  if (inPath && inRange && !player.invincible) {
-    player.hp-=18; player.hp=Math.max(0,player.hp);
-    player.invincible=true; player.invincibleTimer=30;
-    player.vx=enemy.facing*20; player.vy=-5;
-  }
-}
-function chooseNextState(distX, hpRatio) {
-  const r=Math.random();
-  if (distX>400) { enemy.aiState=r<0.3?'patrol':'hunt'; }
-  else if (distX<100) {
-    if (hpRatio<0.3) { enemy.aiState=r<0.4?'retreat':'special'; }
-    else { enemy.aiState=r<0.7?'attack':'special'; }
-  } else { 
-    if (r<0.4) enemy.aiState='hunt';
-    else if (r<0.7) enemy.aiState='attack';
-    else if (r<0.85) enemy.aiState='special';
-    else enemy.aiState='retreat';
-  }
-}
-
-function updatePhysics() {
-  if (!player.onGround) player.vy+=GRAVITY;
-  if (!enemy.onGround) enemy.vy+=GRAVITY;
-  player.x+=player.vx; player.y+=player.vy;
-  enemy.x+=enemy.vx; enemy.y+=enemy.vy;
-
-  handlePlatformCollision(player);
-  handlePlatformCollision(enemy);
-  // Boundaries
-  player.x=Math.max(0, Math.min(canvas.width - player.size, player.x));
-  enemy.x=Math.max(0, Math.min(canvas.width - enemy.size, enemy.x));
-  if (player.y>canvas.height+100) resetPositions();
-  if (enemy.y>canvas.height+100) resetPositions();
-}
-
-function updateTimers() {
-  if (player.invincibleTimer>0) player.invincibleTimer--;
-  if (player.invincibleTimer===0) player.invincible=false;
-}
-
-function checkGameOver() {
-  if (player.hp<=0) {
-    gameState='gameOver';
-    document.getElementById('gameOverText').textContent='DEFEAT!';
-    document.getElementById('winnerText').textContent='Omni-Man has crushed the Smash Snail!';
-    document.getElementById('gameOver').style.display='block';
-  } else if (enemy.hp<=0) {
-    gameState='gameOver';
-    document.getElementById('gameOverText').textContent='VICTORY!';
-    document.getElementById('winnerText').textContent='The Slow Smash Snail triumphs!';
-    document.getElementById('gameOver').style.display='block';
-  }
-}
-
-function updateHealthBars() {
-  document.getElementById('playerHealth').style.width = ((player.hp / player.maxHp) * 100) + '%';
-  document.getElementById('enemyHealth').style.width = ((enemy.hp / enemy.maxHp) * 100) + '%';
-}
-
-function resetPositions() {
-  player.x=100; player.y=0; player.vx=0; player.vy=0; player.hp=player.maxHp; player.invincible=false; player.invincibleTimer=0; player.attacking=false; player.attackTimer=0; player.attackCooldown=0;
-  enemy.x=700; enemy.y=0; enemy.vx=0; enemy.vy=0; enemy.hp=enemy.maxHp; enemy.attacking=false; enemy.attackTimer=0; enemy.attackCooldown=0; enemy.aiState='hunt'; enemy.aiTimer=0; enemy.stateChangeTimer=0; enemy.flyingTimer=0; enemy.isFlying=false; enemy.diveBombTimer=0; enemy.isDiveBombing=false; enemy.laserTimer=0; enemy.isChargingLaser=false; enemy.comboCount=0; enemy.lastAttackTime=0; enemy.patrolDirection=1; enemy.patrolTimer=0; particles.length=0;
-}
-
-function resetGame() {
-  gameState='playing';
-  document.getElementById('gameOver').style.display='none';
+  gameState = 'playing';
+  document.getElementById('gameOver').style.display = 'none';
   resetPositions();
 }
 
@@ -1010,20 +488,21 @@ function drawBackground() {
   const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
   gradient.addColorStop(0, '#87ceeb');
   gradient.addColorStop(1, '#98fb98');
-  ctx.fillStyle=gradient;
-  ctx.fillRect(0,0,canvas.width,canvas.height);
-  ctx.fillStyle='rgba(255,255,255,0.6)';
-  ctx.beginPath(); ctx.arc(150,100,30,0,Math.PI*2); ctx.arc(180,100,40,0,Math.PI*2); ctx.arc(210,100,30,0,Math.PI*2); ctx.fill();
-  ctx.beginPath(); ctx.arc(600,150,25,0,Math.PI*2); ctx.arc(625,150,35,0,Math.PI*2); ctx.arc(650,150,25,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  // Clouds
+  ctx.fillStyle = 'rgba(255,255,255,0.6)';
+  ctx.beginPath(); ctx.arc(150, 100, 30, 0, Math.PI * 2); ctx.arc(180, 100, 40, 0, Math.PI * 2); ctx.arc(210, 100, 30, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath(); ctx.arc(600, 150, 25, 0, Math.PI * 2); ctx.arc(625, 150, 35, 0, Math.PI * 2); ctx.arc(650, 150, 25, 0, Math.PI * 2); ctx.fill();
 }
 
 function drawPlatforms() {
-  ctx.fillStyle='#8b4513';
-  ctx.strokeStyle='#654321';
-  ctx.lineWidth=2;
+  ctx.fillStyle = '#8b4513';
+  ctx.strokeStyle = '#654321';
+  ctx.lineWidth = 2;
   platforms.forEach(p => {
-    ctx.fillRect(p.x,p.y,p.w,p.h);
-    ctx.strokeRect(p.x,p.y,p.w,p.h);
+    ctx.fillRect(p.x, p.y, p.w, p.h);
+    ctx.strokeRect(p.x, p.y, p.w, p.h);
   });
 }
 
@@ -1031,57 +510,64 @@ function drawCharacter(character, color, emoji) {
   ctx.save();
   if (character === enemy && omniManImage.complete) {
     const size = character.size;
-    const centerX = character.x + size/2;
-    const centerY = character.y + size/2;
+    const centerX = character.x + size / 2;
+    const centerY = character.y + size / 2;
     ctx.translate(centerX, centerY);
-    // REMOVE the flip line: ctx.scale(1, -1);
-    ctx.drawImage(omniManImage, -size/2, -size/2, size, size);
+    //ctx.scale(1, -1); // Flip vertically for upside down
+    ctx.drawImage(omniManImage, -size / 2, -size / 2, size, size);
   } else {
-    ctx.fillStyle = color;
-    ctx.fillRect(character.x, character.y, character.size, character.size);
-    ctx.strokeStyle='#000';
-    ctx.lineWidth=2;
-    ctx.strokeRect(character.x, character.y, character.size, character.size);
-    // Eyes
-    ctx.fillStyle='#fff';
-    if (character!==enemy || !enemy.isChargingLaser) {
-      if (character.facing===1) {
-        ctx.fillRect(character.x+30, character.y+10,8,8);
-        ctx.fillRect(character.x+40, character.y+10,8,8);
-        ctx.fillStyle='#000';
-        ctx.fillRect(character.x+33, character.y+13,2,2);
-        ctx.fillRect(character.x+43, character.y+13,2,2);
-      } else {
-        ctx.fillRect(character.x+2, character.y+10,8,8);
-        ctx.fillRect(character.x+12, character.y+10,8,8);
-        ctx.fillStyle='#000';
-        ctx.fillRect(character.x+5, character.y+13,2,2);
-        ctx.fillRect(character.x+15, character.y+13,2,2);
+    // Draw snail or fallback rectangle
+    if (character === player && snailImageLoaded) {
+      ctx.drawImage(snailImage, character.x, character.y, character.size, character.size);
+    } else {
+      ctx.fillStyle = color;
+      ctx.fillRect(character.x, character.y, character.size, character.size);
+      ctx.strokeStyle = '#000';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(character.x, character.y, character.size, character.size);
+      // Eyes
+      ctx.fillStyle = '#fff';
+      if (character !== enemy || !enemy.isChargingLaser) {
+        if (character.facing === 1) {
+          ctx.fillRect(character.x + 30, character.y + 10, 8, 8);
+          ctx.fillRect(character.x + 40, character.y + 10, 8, 8);
+          ctx.fillStyle = '#000';
+          ctx.fillRect(character.x + 33, character.y + 13, 2, 2);
+          ctx.fillRect(character.x + 43, character.y + 13, 2, 2);
+        } else {
+          ctx.fillRect(character.x + 2, character.y + 10, 8, 8);
+          ctx.fillRect(character.x + 12, character.y + 10, 8, 8);
+          ctx.fillStyle = '#000';
+          ctx.fillRect(character.x + 5, character.y + 13, 2, 2);
+          ctx.fillRect(character.x + 15, character.y + 13, 2, 2);
+        }
       }
-    }
-    // Attack effect
-    if (character.attacking && character.attackTimer>0) {
-      ctx.globalAlpha=0.6;
-      ctx.fillStyle= character===player ? '#00ff88':'#ff4444';
-      let attackWidth;
-      if (character.attackType==='mega') attackWidth=45;
-      else if (character.attackType==='super') attackWidth=35;
-      else if (character.attackType==='heavy') attackWidth=25;
-      else attackWidth=20;
-      const attackX= character.facing>0 ? character.x+character.size : character.x-attackWidth;
-      ctx.fillRect(attackX, character.y, attackWidth, character.size);
-      if (character.attackType==='mega') {
-        ctx.fillStyle='#ffff00';
-        ctx.globalAlpha=0.4;
-        ctx.fillRect(attackX-5, character.y-5, attackWidth+10, character.size+10);
+
+      // Attack effect
+      if (character.attacking && character.attackTimer > 0) {
+        ctx.globalAlpha = 0.6;
+        ctx.fillStyle = character === player ? '#00ff88' : '#ff4444';
+        let attackWidth;
+        if (character.attackType === 'mega') attackWidth = 45;
+        else if (character.attackType === 'super') attackWidth = 35;
+        else if (character.attackType === 'heavy') attackWidth = 25;
+        else attackWidth = 20;
+        const attackX = character.facing > 0 ? character.x + character.size : character.x - attackWidth;
+        ctx.fillRect(attackX, character.y, attackWidth, character.size);
+        if (character.attackType === 'mega') {
+          ctx.fillStyle = '#ffff00';
+          ctx.globalAlpha = 0.4;
+          ctx.fillRect(attackX - 5, character.y - 5, attackWidth + 10, character.size + 10);
+        }
+        ctx.globalAlpha = 1;
       }
-      ctx.globalAlpha=1;
     }
   }
   ctx.restore();
 }
+
 function draw() {
-  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawBackground();
   drawPlatforms();
   drawCharacter(player, '#00ff00', '🐌');
@@ -1089,151 +575,7 @@ function draw() {
   drawParticles();
 }
 
-// Particle system
-function createParticle(x,y,color,vx=0,vy=0) {
-  particles.push({x,y,vx,vy,color,life:30,size:Math.random()*3+2,maxLife:30});
-}
-function updateParticles() {
-  for (let i=particles.length-1;i>=0;i--) {
-    const p=particles[i];
-    p.x+=p.vx;
-    p.y+=p.vy;
-    p.vy+=0.2;
-    p.life--;
-    if (p.life<=0) particles.splice(i,1);
-  }
-}
-function drawParticles() {
-  particles.forEach(p => {
-    ctx.globalAlpha=p.life/p.maxLife;
-    ctx.fillStyle=p.color;
-    ctx.fillRect(p.x - p.size/2, p.y - p.size/2, p.size, p.size);
-  });
-  ctx.globalAlpha=1;
-}
-
-// Input
-document.addEventListener('keydown', (e) => { keys[e.key.toLowerCase()]=true; keys[e.key]=true; });
-document.addEventListener('keyup', (e) => { keys[e.key.toLowerCase()]=false; keys[e.key]=false; });
-
-// Game loop
-function handleMovement() {
-  if (keys['arrowleft'] || keys['a']) { player.vx=-player.speed; player.facing=-1; }
-  else if (keys['arrowright'] || keys['d']) { player.vx=player.speed; player.facing=1; }
-  else { player.vx=0; }
-
-  if ((keys['arrowup'] || keys['w'] || keys[' ']) && (player.onGround || player.doubleJump)) {
-    player.vy=-player.jumpStrength;
-    if (!player.onGround) player.doubleJump=false;
-    player.onGround=false;
-  }
-  if (keys['shift'] && !player.invincible) {
-    player.invincible=true; player.invincibleTimer=15;
-    player.vx=player.facing*8;
-  }
-}
-
-function handleAttacks() {
-  if (player.attackTimer>0) player.attackTimer--;
-  if (player.attackCooldown>0) player.attackCooldown--;
-  if (player.attackTimer===0 && player.attackCooldown===0) {
-    if (keys['z']) performAttack(player,'light',8,15,20);
-    else if (keys['x']) performAttack(player,'heavy',15,25,35);
-    else if (keys['c']) performAttack(player,'super',25,35,60);
-  }
-  if (enemy.attackTimer>0) enemy.attackTimer--;
-  if (enemy.attackCooldown>0) enemy.attackCooldown--;
-}
-
-function performAttack(attacker,type,damage,duration,cooldown) {
-  attacker.attacking=true;
-  attacker.attackType=type;
-  attacker.attackTimer=duration;
-  attacker.attackCooldown=cooldown;
-  attacker.damage=damage;
-}
-
-function handlePlatformCollision(entity) {
-  entity.onGround=false;
-  platforms.forEach(p => {
-    if (
-      entity.x+entity.size > p.x &&
-      entity.x < p.x+p.w &&
-      entity.y+entity.size > p.y &&
-      entity.y+entity.size - entity.vy <= p.y+10
-    ) {
-      entity.y=p.y - entity.size;
-      entity.vy=0;
-      entity.onGround=true;
-      if (entity===player) { player.doubleJump=true; }
-    }
-  });
-}
-
-function checkCombat() {
-  if (player.attacking && player.attackTimer>player.attackTimer*0.3) {
-    const dist=Math.abs(player.x - enemy.x) + Math.abs(player.y - enemy.y);
-    if (dist<80) {
-      enemy.hp -= player.damage;
-      enemy.hp=Math.max(0,enemy.hp);
-      enemy.vx=player.facing*(player.attackType==='super'?25:player.attackType==='heavy'?20:15);
-      enemy.vy=-8;
-      for (let i=0;i<10;i++) {
-        createParticle(enemy.x+enemy.size/2, enemy.y+enemy.size/2, '#ff4444', (Math.random()-0.5)*12, (Math.random()-0.5)*12);
-      }
-      player.attacking=false;
-    }
-  }
-  if (enemy.attacking && enemy.attackTimer>enemy.attackTimer*0.3) {
-    const dist=Math.abs(enemy.x - player.x) + Math.abs(enemy.y - player.y);
-    if (dist<80 && !player.invincible) {
-      player.hp -= enemy.damage;
-      player.hp=Math.max(0,player.hp);
-      player.vx=enemy.facing*18;
-      player.vy=-6;
-      player.invincible=true; player.invincibleTimer=25;
-      for (let i=0;i<8;i++) {
-        createParticle(player.x+player.size/2, player.y+player.size/2, '#00ff88', (Math.random()-0.5)*10, (Math.random()-0.5)*10);
-      }
-      enemy.attacking=false;
-    }
-  }
-}
-
-function updateAI() {
-  if (gameState!=='playing' || enemy.hp<=0) return;
-  const distX=Math.abs(enemy.x - player.x);
-  const distY=Math.abs(enemy.y - player.y);
-  const dir=enemy.x<player.x?1:-1;
-
-  enemy.aiTimer++;
-  enemy.stateChangeTimer++;
-  if (enemy.flyingTimer>0) enemy.flyingTimer--;
-  if (enemy.diveBombTimer>0) enemy.diveBombTimer--;
-  if (enemy.laserTimer>0) enemy.laserTimer--;
-  enemy.patrolTimer++;
-
-  switch(enemy.aiState) {
-    case 'hunt': handleHuntState(distX, distY, dir); break;
-    case 'attack': handleAttackState(distX, distY, dir); break;
-    case 'retreat': handleRetreatState(distX, distY, dir); break;
-    case 'special': handleSpecialState(distX, distY, dir); break;
-    case 'patrol': handlePatrolState(); break;
-  }
-
-  updateSpecialAbilities();
-
-  if (enemy.stateChangeTimer>180) {
-    chooseNextState(distX, enemy.hp/enemy.maxHp);
-    enemy.stateChangeTimer=0;
-  }
-}
-
-// State handlers omitted for brevity (use previous code logic: same as before)
-
-// ... (the rest of your previous code: handleHuntState, handleAttackState, etc.) ...
-
-// Main update and draw
+// Game update loop
 function update() {
   if (gameState !== 'playing') return;
   handleMovement();
@@ -1247,24 +589,16 @@ function update() {
   checkGameOver();
 }
 
-function draw() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  drawBackground();
-  drawPlatforms();
-  drawCharacter(player, '#00ff00', '🐌');
-  drawCharacter(enemy, '#ff0000', '💪');
-  drawParticles();
+// Start the game loop after the snail image loads
+// If the image is already loaded, start immediately
+if (snailImage.complete) {
+  gameLoop();
+} else {
+  snailImage.onload = () => {
+    snailImageLoaded = true;
+    gameLoop();
+  };
 }
-
-// Kickoff
-function gameLoop() {
-  update();
-  draw();
-  requestAnimationFrame(gameLoop);
-}
-
-// Start the game
-gameLoop();
 </script>
 </body>
 </html>
